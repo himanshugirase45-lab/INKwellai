@@ -661,6 +661,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="js/firebase-config.js"></script>
+    <!-- Fallback if the JS file doesn't define globals -->
+    <script>
+      (function() {
+        if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+            window.auth = window.auth || firebase.auth();
+            window.googleProvider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
+            // Assign to local scope if they're not there
+            if (typeof auth === 'undefined') window.auth = window.auth;
+            if (typeof googleProvider === 'undefined') window.googleProvider = window.googleProvider;
+            console.log("Firebase Fallback: Initialized");
+        }
+      })();
+    </script>
     <script src="app.js"></script>
 </body>
 
