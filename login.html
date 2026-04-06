@@ -303,19 +303,33 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="js/firebase-config.js"></script>
     
-    <!-- Fallback if the JS file doesn't define globals -->
     <script>
       (function() {
-        if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-            window.auth = window.auth || firebase.auth();
-            window.googleProvider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
-            // Assign to local scope if they're not there
-            if (typeof auth === 'undefined') window.auth = window.auth;
-            if (typeof googleProvider === 'undefined') window.googleProvider = window.googleProvider;
-            console.log("Firebase Fallback: Initialized");
+        const firebaseConfig = {
+          apiKey: "AIzaSyCEKzLUERqfjoxCWDdGsbOKGxRnnDlcbSI",
+          authDomain: "inkwell-70599.firebaseapp.com",
+          projectId: "inkwell-70599",
+          storageBucket: "inkwell-70599.firebasestorage.app",
+          messagingSenderId: "632617567306",
+          appId: "1:632617567306:web:b9fcc5ddd2e573880e12b3",
+          measurementId: "G-P32S0NXK7R"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
+        
+        window.auth = firebase.auth();
+        window.googleProvider = new firebase.auth.GoogleAuthProvider();
+        
+        // Ensure they are available as local variables for any script following this
+        window.auth = window.auth;
+        window.googleProvider = window.googleProvider;
+        
+        // Setup simple aliases in case app.js expects them in global scope
+        window.auth = window.auth;
+        window.googleProvider = window.googleProvider;
       })();
     </script>
     
