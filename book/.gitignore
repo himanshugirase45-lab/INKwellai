@@ -1,0 +1,10 @@
+# Project-specific ignores
+book-platform/js/firebase-config.js
+
+# General ignores
+node_modules/
+.DS_Store
+.cursor/
+.vscode/
+Thumbs.db
+desktop.ini

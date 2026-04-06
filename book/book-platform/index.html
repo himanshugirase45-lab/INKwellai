@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Inkwell — Where Stories Come Alive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="nav" id="nav">
+        <a href="index.html" class="nav-brand">
+            <div class="nav-logo">📖</div>
+            Inkwell
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="library.html">Library</a>
+            <a href="dashboard.html" onclick="if(!localStorage.getItem('user') || localStorage.getItem('user') === 'null') { event.preventDefault(); location.href='login.html'; toast('Please sign in to access the dashboard', 'error'); }">Dashboard</a>
+            <a href="editor.html">Write</a>
+        </div>
+        <div class="nav-right">
+            <button class="nav-settings-btn" onclick="toggleSettings()" id="settingsBtn" title="Settings">⚙️</button>
+            <button class="nav-signin" onclick="location.href='login.html'">Sign In</button>
+            <button class="nav-cta" onclick="location.href='login.html'">Get Started</button>
+            <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <!-- ══ SETTINGS PANEL ══ -->
+    <div class="settings-backdrop" id="settingsBackdrop" onclick="closeSettings()"></div>
+    <aside class="settings-panel" id="settingsPanel">
+        <div class="sp-header">
+            <div class="sp-title">
+                <span class="sp-icon">⚙️</span>
+                <span>Settings</span>
+            </div>
+            <button class="sp-close" onclick="closeSettings()">✕</button>
+        </div>
+
+        <!-- Theme -->
+        <div class="sp-section">
+            <div class="sp-section-label">Appearance</div>
+            <div class="sp-row">
+                <div class="sp-row-info">
+                    <div class="sp-row-title">Theme</div>
+                    <div class="sp-row-sub">Choose your preferred look</div>
+                </div>
+            </div>
+            <div class="sp-theme-grid">
+                <button class="sp-theme-opt" id="themeOptDark" onclick="setTheme('dark')">
+                    <div class="sp-theme-preview dark-prev"></div>
+                    <span>Dark</span>
+                </button>
+                <button class="sp-theme-opt active" id="themeOptLight" onclick="setTheme('light')">
+                    <div class="sp-theme-preview light-prev"></div>
+                    <span>Light</span>
+                </button>
+                <button class="sp-theme-opt" id="themeOptDim" onclick="setTheme('dim')">
+                    <div class="sp-theme-preview dim-prev"></div>
+                    <span>Dim</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="sp-section">
+            <div class="sp-section-label">Accent Color</div>
+            <div class="sp-colors">
+                <button class="sp-color active" id="accentViolet"
+                    style="background:linear-gradient(135deg,#7c6af7,#a855f7)"
+                    onclick="setAccent('violet','#7c6af7','#a78bfa')" title="Violet"></button>
+                <button class="sp-color" id="accentGold" style="background:linear-gradient(135deg,#c9a84c,#e8c96d)"
+                    onclick="setAccent('gold','#c9a84c','#e8c96d')" title="Gold"></button>
+                <button class="sp-color" id="accentRose" style="background:linear-gradient(135deg,#f43f5e,#fb7185)"
+                    onclick="setAccent('rose','#f43f5e','#fb7185')" title="Rose"></button>
+                <button class="sp-color" id="accentCyan" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)"
+                    onclick="setAccent('cyan','#06b6d4','#22d3ee')" title="Cyan"></button>
+                <button class="sp-color" id="accentGreen" style="background:linear-gradient(135deg,#22c55e,#4ade80)"
+                    onclick="setAccent('green','#22c55e','#4ade80')" title="Green"></button>
+                <button class="sp-color" id="accentOrange" style="background:linear-gradient(135deg,#f97316,#fb923c)"
+                    onclick="setAccent('orange','#f97316','#fb923c')" title="Orange"></button>
+            </div>
+        </div>
+
+        <!-- Font Size -->
+        <div class="sp-section">
+            <div class="sp-section-label">Font Size</div>
+            <div class="sp-font-row">
+                <button class="sp-font-btn" onclick="setFont('small')" id="fontSmall">A<span
+                        style="font-size:.6em">a</span></button>
+                <button class="sp-font-btn active" onclick="setFont('medium')" id="fontMedium">A<span
+                        style="font-size:.75em">a</span></button>
+                <button class="sp-font-btn" onclick="setFont('large')" id="fontLarge">A<span
+                        style="font-size:.9em">a</span></button>
+            </div>
+        </div>
+
+        <!-- Animations -->
+        <div class="sp-section">
+            <div class="sp-section-label">Preferences</div>
+            <div class="sp-toggle-row">
+                <div>
+                    <div class="sp-row-title">Animations</div>
+                    <div class="sp-row-sub">Smooth transitions and effects</div>
+                </div>
+                <label class="sp-toggle">
+                    <input type="checkbox" id="animToggle" checked onchange="toggleAnimations(this.checked)" />
+                    <span class="sp-toggle-track"></span>
+                </label>
+            </div>
+            <div class="sp-toggle-row">
+                <div>
+                    <div class="sp-row-title">Compact Mode</div>
+                    <div class="sp-row-sub">Reduce spacing and padding</div>
+                </div>
+                <label class="sp-toggle">
+                    <input type="checkbox" id="compactToggle" onchange="toggleCompact(this.checked)" />
+                    <span class="sp-toggle-track"></span>
+                </label>
+            </div>
+            <div class="sp-toggle-row">
+                <div>
+                    <div class="sp-row-title">Reading Focus Mode</div>
+                    <div class="sp-row-sub">Hide distractions while reading</div>
+                </div>
+                <label class="sp-toggle">
+                    <input type="checkbox" id="focusToggle" onchange="toggleFocus(this.checked)" />
+                    <span class="sp-toggle-track"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Language -->
+        <div class="sp-section">
+            <div class="sp-section-label">Language &amp; Region</div>
+            <div class="sp-row">
+                <div class="sp-row-info">
+                    <div class="sp-row-title">Language</div>
+                </div>
+                <select class="sp-select" onchange="setLanguage(this.value)">
+                    <option value="en">🇺🇸 English</option>
+                    <option value="fr">🇫🇷 French</option>
+                    <option value="es">🇪🇸 Spanish</option>
+                    <option value="de">🇩🇪 German</option>
+                    <option value="ja">🇯🇵 Japanese</option>
+                    <option value="ar">🇸🇦 Arabic</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Admin -->
+        <div class="sp-section">
+            <button class="sp-reset" onclick="window.location.href='admin.html'">🛡️ Admin Panel</button>
+        </div>
+
+        <!-- Reset -->
+        <div class="sp-section">
+            <button class="sp-reset" onclick="resetSettings()">↺ Reset to Defaults</button>
+        </div>
+
+        <!-- Credit -->
+        <div class="sp-section" style="text-align:center;padding:20px 24px 28px">
+            <div style="font-size:1.6rem;margin-bottom:10px">✍️</div>
+            <div
+                style="font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px">
+                Created by</div>
+            <div style="font-size:1rem;font-weight:800;color:#e8c96d;letter-spacing:.3px">Himanshu Girase</div>
+            <div style="font-size:.75rem;color:var(--text3);margin-top:4px;font-weight:300">Inkwell Platform · 2026
+            </div>
+        </div>
+    </aside>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+        <!-- LEFT -->
+        <div class="hero-left">
+            <div class="hero-pill">
+                <span class="hero-pill-dot"></span>
+                Now with AI Writing Assistant
+            </div>
+            <h1 class="hero-h1">
+                The Place Where<br />
+                <em>Great Stories</em><br />
+                Are Born
+            </h1>
+            <p class="hero-p">Write, publish, and discover books in a distraction-free environment. Powered by AI,
+                crafted for storytellers who mean business.</p>
+            <div class="hero-btns">
+                <a href="editor.html" class="btn-violet">✍️ Start Writing Free</a>
+                <a href="library.html" class="btn-ghost">📚 Browse Library</a>
+            </div>
+
+        </div>
+
+        <!-- RIGHT: Open Book Scene -->
+        <div class="hero-right">
+            <div class="ob-scene">
+                <!-- ambient glow -->
+                <div class="ob-glow"></div>
+
+                <!-- floating mini pages -->
+                <div class="ob-fly ob-fly-1">
+                    <div class="ob-fly-line g w100"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                </div>
+                <div class="ob-fly ob-fly-2">
+                    <div class="ob-fly-line g w100"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                </div>
+                <div class="ob-fly ob-fly-3">
+                    <div class="ob-fly-line g w100"></div>
+                    <div class="ob-fly-line w80"></div>
+                    <div class="ob-fly-line w60"></div>
+                    <div class="ob-fly-line w80"></div>
+                </div>
+
+                <!-- open book -->
+                <div class="ob-book">
+                    <div class="ob-spine"></div>
+                    <!-- left page -->
+                    <div class="ob-page-l">
+                        <div class="ob-chapter">Chapter I</div>
+                        <div class="ob-line gold"></div>
+                        <div class="ob-line w90"></div>
+                        <div class="ob-line w75"></div>
+                        <div class="ob-line w90"></div>
+                        <div class="ob-line w60"></div>
+                        <div class="ob-line w80"></div>
+                        <div class="ob-line w90"></div>
+                        <div class="ob-line w50"></div>
+                        <div class="ob-line w80"></div>
+                        <div class="ob-line w75"></div>
+                        <div class="ob-line w40"></div>
+                        <!-- ink drop -->
+                        <div class="ob-ink" style="width:40px;height:40px;bottom:20px;right:14px;"></div>
+                    </div>
+                    <!-- right page -->
+                    <div class="ob-page-r">
+                        <div class="ob-chapter">Chapter II</div>
+                        <div class="ob-line gold"></div>
+                        <div class="ob-line w80"></div>
+                        <div class="ob-line w90"></div>
+                        <div class="ob-line w60"></div>
+                        <div class="ob-line w75"></div>
+                        <div class="ob-line w90"></div>
+                        <div class="ob-line w50"></div>
+                        <div class="ob-line w80"></div>
+                        <div class="ob-line w75"></div>
+                        <div class="ob-line w60"></div>
+                        <div class="ob-line w40"></div>
+                    </div>
+                </div>
+
+                <!-- float: readers -->
+                <div class="bs-float bs-float-readers">
+                    <div class="fi">❤️</div>
+                    <div>
+                        <div class="fv">24.5K</div>
+                        <div class="fl">Readers this week</div>
+                    </div>
+                </div>
+
+                <!-- float: genres -->
+                <div class="bs-float bs-float-genres">
+                    <div class="fg-label">Top Genres</div>
+                    <div class="fg-row">
+                        <div class="fg-top"><span>Fantasy</span><span>85%</span></div>
+                        <div class="fg-bar">
+                            <div class="fg-fill" style="width:85%;background:linear-gradient(90deg,#7c6af7,#a78bfa)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fg-row">
+                        <div class="fg-top"><span>Romance</span><span>72%</span></div>
+                        <div class="fg-bar">
+                            <div class="fg-fill" style="width:72%;background:linear-gradient(90deg,#f97316,#ec4899)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fg-row">
+                        <div class="fg-top"><span>Sci-Fi</span><span>60%</span></div>
+                        <div class="fg-bar">
+                            <div class="fg-fill" style="width:60%;background:linear-gradient(90deg,#06b6d4,#3b82f6)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- writing streak badge -->
+                <div class="ob-badge">
+                    <div class="ob-badge-icon">🔥</div>
+                    <div>
+                        <div class="ob-badge-val">12-Day</div>
+                        <div class="ob-badge-lbl">Writing Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ MARQUEE ══ -->
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <div class="mi">Fantasy <span class="dot">◆</span></div>
+            <div class="mi">Science Fiction <span class="dot">◆</span></div>
+            <div class="mi">Romance <span class="dot">◆</span></div>
+            <div class="mi">Mystery &amp; Thriller <span class="dot">◆</span></div>
+            <div class="mi">Horror <span class="dot">◆</span></div>
+            <div class="mi">Non-Fiction <span class="dot">◆</span></div>
+            <div class="mi">Biography <span class="dot">◆</span></div>
+            <div class="mi">Self-Help <span class="dot">◆</span></div>
+            <div class="mi">Poetry <span class="dot">◆</span></div>
+            <div class="mi">Historical Fiction <span class="dot">◆</span></div>
+            <div class="mi">Fantasy <span class="dot">◆</span></div>
+            <div class="mi">Science Fiction <span class="dot">◆</span></div>
+            <div class="mi">Romance <span class="dot">◆</span></div>
+            <div class="mi">Mystery &amp; Thriller <span class="dot">◆</span></div>
+            <div class="mi">Horror <span class="dot">◆</span></div>
+            <div class="mi">Non-Fiction <span class="dot">◆</span></div>
+            <div class="mi">Biography <span class="dot">◆</span></div>
+            <div class="mi">Self-Help <span class="dot">◆</span></div>
+            <div class="mi">Poetry <span class="dot">◆</span></div>
+            <div class="mi">Historical Fiction <span class="dot">◆</span></div>
+        </div>
+    </div>
+
+
+
+    <!-- ══ FEATURES ══ -->
+    <section class="sec">
+        <div class="sec-inner">
+            <div style="text-align:center;max-width:540px;margin:0 auto">
+                <div class="eyebrow" style="justify-content:center">⚡ Platform Features</div>
+                <h2 class="sec-title">Everything a writer needs</h2>
+                <p class="sec-sub" style="margin:0 auto">From blank page to bestseller — every tool you need,
+                    beautifully designed.</p>
+            </div>
+            <div class="feat-grid">
+                <div class="feat">
+                    <div class="feat-n">01</div>
+                    <div class="feat-icon">✍️</div>
+                    <div class="feat-title">Rich Text Editor</div>
+                    <div class="feat-desc">Distraction-free writing with formatting, chapter management, drag-and-drop
+                        blocks, and intelligent auto-save.</div>
+                </div>
+                <div class="feat">
+                    <div class="feat-n">02</div>
+                    <div class="feat-icon">🤖</div>
+                    <div class="feat-title">AI Writing Assistant</div>
+                    <div class="feat-desc">Smart next-line suggestions, grammar improvements, and style coaching —
+                        powered by AI, right inside your editor.</div>
+                </div>
+                <div class="feat">
+                    <div class="feat-n">03</div>
+                    <div class="feat-icon">🎙️</div>
+                    <div class="feat-title">Voice to Text</div>
+                    <div class="feat-desc">Dictate your story hands-free with real-time voice transcription. Your words,
+                        your pace.</div>
+                </div>
+                <div class="feat">
+                    <div class="feat-n">04</div>
+                    <div class="feat-icon">📖</div>
+                    <div class="feat-title">Immersive Reading</div>
+                    <div class="feat-desc">Clean reading mode with adjustable fonts, sepia/dark themes, bookmarks, and
+                        progress tracking.</div>
+                </div>
+                <div class="feat">
+                    <div class="feat-n">05</div>
+                    <div class="feat-icon">📤</div>
+                    <div class="feat-title">Export as PDF</div>
+                    <div class="feat-desc">Export your finished book as a beautifully formatted PDF with one click —
+                        ready to share anywhere.</div>
+                </div>
+                <div class="feat">
+                    <div class="feat-n">06</div>
+                    <div class="feat-icon">🌍</div>
+                    <div class="feat-title">Global Library</div>
+                    <div class="feat-desc">Publish your work and reach millions of readers worldwide. Track reads,
+                        likes, and comments in real time.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ PROMO SPLIT ══ -->
+    <div class="promo">
+        <div class="promo-photo">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85" alt="Library"
+                loading="lazy" />
+            <div class="promo-photo-fade"></div>
+        </div>
+        <div class="promo-text">
+            <div class="promo-quote">The world belongs to those who read.</div>
+            <h2 class="promo-h2">We Now Have a<br /><span style="color:#e8c96d">Physical Store</span></h2>
+            <p class="promo-p">Visit our flagship bookstore — over one million titles across every genre. A space
+                designed for readers, writers, and dreamers.</p>
+            <div class="promo-btns">
+                <button class="btn-gold" onclick="location.href='login.html'">Register Now</button>
+                <a href="library.html" class="btn-outline">Browse Online →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TESTIMONIALS ══ -->
+    <section class="sec alt">
+        <div class="sec-inner">
+            <div class="sec-row">
+                <div>
+                    <div class="eyebrow">💬 What Writers Say</div>
+                    <h2 class="sec-title">Loved by storytellers</h2>
+                </div>
+            </div>
+            <div class="testi-grid">
+                <div class="testi">
+                    <div class="testi-stars">★★★★★</div>
+                    <div class="testi-text">Inkwell completely transformed how I write. The AI assistant feels like
+                        having a co-author who's always available. I published my first novel in 3 months.</div>
+                    <div class="testi-author">
+                        <div class="testi-av">EV</div>
+                        <div>
+                            <div class="testi-name">Elena Voss</div>
+                            <div class="testi-role">Fantasy Author · 3 books published</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi">
+                    <div class="testi-stars">★★★★★</div>
+                    <div class="testi-text">The reading experience is unmatched. Clean, beautiful, and distraction-free.
+                        I've read more books this year than the last five combined.</div>
+                    <div class="testi-author">
+                        <div class="testi-av" style="background:linear-gradient(135deg,#f97316,#ec4899)">MC</div>
+                        <div>
+                            <div class="testi-name">Marcus Chen</div>
+                            <div class="testi-role">Sci-Fi Writer &amp; Avid Reader</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi">
+                    <div class="testi-stars">★★★★★</div>
+                    <div class="testi-text">From draft to published in one platform. The chapter management and
+                        auto-save alone saved me countless hours. This is the future of writing.</div>
+                    <div class="testi-author">
+                        <div class="testi-av" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">SL</div>
+                        <div>
+                            <div class="testi-name">Sofia Laurent</div>
+                            <div class="testi-role">Romance Author · 12K followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ EVENTS ══ -->
+    <section class="sec">
+        <div class="sec-inner">
+            <div class="eyebrow">📅 Community</div>
+            <h2 class="sec-title">Upcoming Events</h2>
+            <div class="events-layout">
+                <div>
+                    <div class="ev-item">
+                        <div class="ev-num">01</div>
+                        <div>
+                            <div class="ev-date">April 30, 2026</div>
+                            <div class="ev-title">Spring Writing Contest</div>
+                            <div class="ev-desc">Submit your short story or first chapter. Winners receive publishing
+                                deals and cash prizes. Open to all genres.</div>
+                        </div>
+                    </div>
+                    <div class="ev-item">
+                        <div class="ev-num">02</div>
+                        <div>
+                            <div class="ev-date">March 28, 2026 · 7 PM</div>
+                            <div class="ev-title">Meet &amp; Greet: Featured Authors</div>
+                            <div class="ev-desc">Award-winning authors join a live Q&amp;A. They'll read from new
+                                releases and sign digital copies for attendees.</div>
+                        </div>
+                    </div>
+                    <div class="ev-item">
+                        <div class="ev-num">03</div>
+                        <div>
+                            <div class="ev-date">Every Saturday</div>
+                            <div class="ev-title">Story Time with Friends</div>
+                            <div class="ev-desc">A weekly community reading session. All genres welcome. Hosted by the
+                                Inkwell Community Foundation.</div>
+                        </div>
+                    </div>
+                    <div class="ev-item">
+                        <div class="ev-num">04</div>
+                        <div>
+                            <div class="ev-date">April 5, 2026</div>
+                            <div class="ev-title">AI Writing Workshop</div>
+                            <div class="ev-desc">Learn to use Inkwell's AI assistant to supercharge your writing. Free
+                                for all registered users.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ev-photos">
+                    <div class="ev-photo"><img
+                            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80"
+                            alt="Library event" loading="lazy" /></div>
+                    <div class="ev-photo"><img
+                            src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=80" alt="Reading"
+                            loading="lazy" /></div>
+                    <div class="ev-photo"><img
+                            src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&q=80" alt="Books"
+                            loading="lazy" /></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ CTA ══ -->
+    <div class="cta-wrap">
+        <div class="cta-inner">
+            <div class="eyebrow" style="justify-content:center;margin-bottom:18px">🚀 Start Today — It's Free</div>
+            <h2 class="cta-h2">Ready to write your<br /><em>masterpiece?</em></h2>
+            <p class="cta-p">Join 50,000+ writers who have already published their first book on Inkwell. No credit card
+                required.</p>
+            <div class="cta-btns">
+                <button class="btn-gold" style="padding:14px 30px;font-size:.95rem" onclick="location.href='login.html'">Create
+                    Free Account</button>
+                <a href="library.html" class="btn-outline" style="padding:14px 30px;font-size:.95rem">Explore
+                    Library</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div>
+                    <div class="nav-brand" style="font-size:1.1rem">
+                        <div class="nav-logo">📖</div> Inkwell
+                    </div>
+                    <p class="footer-desc">The modern platform for writers and readers. Create, publish, and discover
+                        stories that matter to the world.</p>
+                    <div class="footer-socials">
+                        <div class="fsoc">𝕏</div>
+                        <div class="fsoc">in</div>
+                        <div class="fsoc">ig</div>
+                        <div class="fsoc">yt</div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Platform</h5>
+                    <a href="library.html">Library</a>
+                    <a href="editor.html">Write</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="admin.html">Admin Panel</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Genres</h5>
+                    <a href="library.html">Fantasy</a>
+                    <a href="library.html">Sci-Fi</a>
+                    <a href="library.html">Romance</a>
+                    <a href="library.html">Mystery</a>
+                    <a href="library.html">Horror</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Company</h5>
+                    <a href="#">About Us</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Inkwell. All rights reserved.</p>
+                <p>Made with ❤️ for storytellers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══ MODALS ══ -->
+    <div class="overlay" id="loginM">
+        <div class="modal">
+            <div class="modal-hd">
+                <h3>Welcome back 👋</h3><button class="modal-x" onclick="closeM('loginM')">✕</button>
+            </div>
+            <div class="field"><label>Email</label><input class="inp" type="email" placeholder="you@example.com"
+                    id="lEmail" /></div>
+            <div class="field"><label>Password</label><input class="inp" type="password" placeholder="••••••••"
+                    id="lPass" /></div>
+            <button class="btn-modal" onclick="doLogin()">Sign In</button>
+            <div style="display:flex;align-items:center;margin:15px 0;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px"><hr style="flex:1;opacity:.1;margin-right:10px">or<hr style="flex:1;opacity:.1;margin-left:10px"></div>
+            <button class="btn-modal" onclick="doGoogleLogin()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--text);margin-bottom:15px">
+                <span style="margin-right:8px">G</span> Sign in with Google
+            </button>
+            <div class="modal-switch">No account? <a href="#" onclick="swapM('loginM','signupM')">Sign up</a></div>
+        </div>
+    </div>
+    <div class="overlay" id="signupM">
+        <div class="modal">
+            <div class="modal-hd">
+                <h3>Create your account ✨</h3><button class="modal-x" onclick="closeM('signupM')">✕</button>
+            </div>
+            <div class="field"><label>Full Name</label><input class="inp" type="text" placeholder="Your name"
+                    id="sName" /></div>
+            <div class="field"><label>Email</label><input class="inp" type="email" placeholder="you@example.com"
+                    id="sEmail" /></div>
+            <div class="field"><label>Password</label><input class="inp" type="password" placeholder="Min. 8 characters"
+                    id="sPass" /></div>
+            <button class="btn-modal" onclick="doSignup()">Create Account</button>
+            <div style="display:flex;align-items:center;margin:15px 0;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px"><hr style="flex:1;opacity:.1;margin-right:10px">or<hr style="flex:1;opacity:.1;margin-left:10px"></div>
+            <button class="btn-modal" onclick="doGoogleLogin()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--text);margin-bottom:15px">
+                <span style="margin-right:8px">G</span> Sign up with Google
+            </button>
+            <div class="modal-switch">Have an account? <a href="#" onclick="swapM('signupM','loginM')">Sign in</a></div>
+        </div>
+    </div>
+    <div class="overlay" id="detailM">
+        <div class="modal" style="max-width:500px">
+            <div class="modal-hd">
+                <h3 id="dTitle"></h3><button class="modal-x" onclick="closeM('detailM')">✕</button>
+            </div>
+            <div style="display:flex;gap:18px;margin-bottom:18px">
+                <div id="dCover"
+                    style="width:88px;height:124px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.6rem">
+                </div>
+                <div>
+                    <div id="dAuthor" style="font-size:.8rem;color:var(--text3);margin-bottom:7px"></div>
+                    <div id="dCat"
+                        style="display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#e8c96d;background:rgba(201,168,76,0.1);padding:3px 9px;border-radius:20px;margin-bottom:9px">
+                    </div>
+                    <div style="display:flex;gap:12px;font-size:.78rem;color:var(--text3)">
+                        <span id="dRating"></span><span id="dReads"></span><span id="dLikes"></span>
+                    </div>
+                </div>
+            </div>
+            <p id="dDesc"
+                style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:18px;font-weight:300"></p>
+            <div style="display:flex;gap:10px">
+                <button id="dReadBtn" class="btn-gold" style="flex:1;justify-content:center">📖 Read Now</button>
+                <button class="btn-outline" onclick="closeM('detailM')">Later</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toasts" id="toasts"></div>
+    
+    <!-- ── Firebase SDK ── -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

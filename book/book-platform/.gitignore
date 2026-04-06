@@ -1,0 +1,18 @@
+# Firebase actual configuration (DO NOT SHARE ON GIT)
+/js/firebase-config.js
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE / Editor Files
+.vscode/
+.idea/
+.DS_Store
+
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini

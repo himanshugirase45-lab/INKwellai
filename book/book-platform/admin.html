@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Inkwell</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="logo-icon">📖</div><span>Inkwell</span>
+            <span class="badge" style="margin-left:8px;font-size:0.7rem">Admin</span>
+        </a>
+        <div class="navbar-nav">
+            <a href="index.html">Home</a>
+            <a href="library.html">Library</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="admin.html" class="active">Admin</a>
+        </div>
+        <div class="navbar-actions">
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <div class="avatar" style="background:var(--gradient-warm)">AD</div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Admin</div>
+                <div class="sidebar-item active" onclick="showAdminTab('overview')"><span class="icon">📊</span>
+                    Overview</div>
+                <div class="sidebar-item" onclick="showAdminTab('users')"><span class="icon">👥</span> Users <span
+                        class="count" id="userCountBadge">0</span></div>
+                <div class="sidebar-item" onclick="showAdminTab('books')"><span class="icon">📚</span> Books <span
+                        class="count" id="bookCountBadge">0</span></div>
+                <div class="sidebar-item" onclick="showAdminTab('reports')"><span class="icon">🚨</span> Reports <span
+                        class="count">3</span></div>
+                <div class="sidebar-item" onclick="showAdminTab('settings')"><span class="icon">⚙️</span> Settings</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- OVERVIEW -->
+            <div id="admin-tab-overview">
+                <div class="flex-between mb-3">
+                    <h2>Admin Overview</h2>
+                    <span class="badge">⚡ Live</span>
+                </div>
+                <div class="stats-grid stagger mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-value" id="adminTotalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-change">↑ 12 today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-value" id="adminTotalBooks">0</div>
+                        <div class="stat-label">Total Books</div>
+                        <div class="stat-change">↑ 5 today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-value">2.1M</div>
+                        <div class="stat-label">Total Reads</div>
+                        <div class="stat-change">↑ 8% this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚨</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Pending Reports</div>
+                        <div class="stat-change" style="color:var(--warning)">Needs review</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="mb-3">Recent Activity</h3>
+                    <div id="recentActivity"></div>
+                </div>
+            </div>
+
+            <!-- USERS -->
+            <div id="admin-tab-users" class="hidden">
+                <div class="flex-between mb-3">
+                    <h2>Manage Users</h2>
+                    <div style="display:flex;gap:10px">
+                        <input class="input" style="width:240px" placeholder="Search users..."
+                            oninput="searchUsers(this.value)" />
+                    </div>
+                </div>
+                <div class="card" style="padding:0;overflow:hidden">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Books</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BOOKS -->
+            <div id="admin-tab-books" class="hidden">
+                <div class="flex-between mb-3">
+                    <h2>Manage Books</h2>
+                    <input class="input" style="width:240px" placeholder="Search books..."
+                        oninput="searchAdminBooks(this.value)" />
+                </div>
+                <div class="card" style="padding:0;overflow:hidden">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Reads</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REPORTS -->
+            <div id="admin-tab-reports" class="hidden">
+                <h2 class="mb-3">Content Reports</h2>
+                <div id="reportsList"></div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div id="admin-tab-settings" class="hidden">
+                <h2 class="mb-3">Platform Settings</h2>
+                <div class="card mb-3">
+                    <h3 class="mb-3">General</h3>
+                    <div style="display:flex;flex-direction:column;gap:16px">
+                        <div class="input-group"><label>Platform Name</label><input class="input" value="Inkwell" />
+                        </div>
+                        <div class="input-group"><label>Max Books Per User</label><input class="input" type="number"
+                                value="50" /></div>
+                        <div class="flex-between"><span>Allow New Registrations</span><input type="checkbox" checked />
+                        </div>
+                        <div class="flex-between"><span>Require Email Verification</span><input type="checkbox"
+                                checked /></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="mb-3">Content Moderation</h3>
+                    <div style="display:flex;flex-direction:column;gap:16px">
+                        <div class="flex-between"><span>Auto-flag inappropriate content</span><input type="checkbox"
+                                checked /></div>
+                        <div class="flex-between"><span>Require approval for new books</span><input type="checkbox" />
+                        </div>
+                        <button class="btn btn-primary mt-2">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- CONFIRM ACTION MODAL -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal" style="max-width:400px">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <button class="modal-close" onclick="closeModal('confirmModal')">✕</button>
+            </div>
+            <p id="confirmMessage" class="mb-3"></p>
+            <div style="display:flex;gap:10px">
+                <button class="btn btn-danger" style="flex:1;justify-content:center" id="confirmBtn">Confirm</button>
+                <button class="btn btn-secondary" style="flex:1;justify-content:center"
+                    onclick="closeModal('confirmModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN OVERLAY -->
+    <div class="modal-overlay" id="adminLoginOverlay" style="display:flex; flex-direction:column; justify-content:center; align-items:center; background:var(--bg); z-index:99999;">
+        <div class="modal" style="text-align:center; width:100%; max-width:400px; padding:40px 30px;">
+            <div style="font-size:3.5rem; margin-bottom:15px;">🛡️</div>
+            <h2 style="margin-bottom:8px;">Admin Access</h2>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">Please enter the password to access the admin portal.</p>
+            <div style="text-align:left; margin-bottom:20px;">
+                <label style="display:block; margin-bottom:8px; font-weight:600; font-size:0.85rem; color:var(--text)">Password</label>
+                <input class="input" type="password" id="adminPasswordInput" placeholder="Enter password (e.g. admin123)..." style="width:100%;" onkeyup="if(event.key === 'Enter') checkAdminPassword()" />
+                <div id="adminLoginError" style="color:#ef4444; font-size:0.8rem; margin-top:8px; display:none;">Incorrect password. Access denied.</div>
+            </div>
+            <button class="btn btn-primary" style="width:100%; justify-content:center; padding:12px; margin-bottom:12px;" onclick="checkAdminPassword()">Authenticate</button>
+            <button class="btn btn-ghost" style="width:100%; justify-content:center; padding:12px;" onclick="window.location.href='index.html'">Return to Homepage</button>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

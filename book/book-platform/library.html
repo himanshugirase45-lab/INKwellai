@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library — Inkwell</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <button onclick="history.back()" class="btn btn-secondary btn-sm"
+            style="margin-right:8px;display:flex;align-items:center;gap:6px;flex-shrink:0">← Back</button>
+        <a href="index.html" class="navbar-brand">
+            <div class="logo-icon">📖</div><span>Inkwell</span>
+        </a>
+        <div class="navbar-nav">
+            <a href="index.html">Home</a>
+            <a href="library.html" class="active">Library</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="editor.html">Write</a>
+        </div>
+        <div class="navbar-actions">
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <button onclick="togglePageSettings()" id="pageSettingsBtn" title="Settings" class="btn-icon"
+                style="font-size:1rem">⚙️</button>
+            <div class="dropdown">
+                <div class="avatar" onclick="toggleDropdown('userMenu')">JD</div>
+                <div class="dropdown-menu" id="userMenu">
+                    <div class="dropdown-item" onclick="location.href='dashboard.html'">👤 Profile</div>
+                    <div class="dropdown-item" onclick="location.href='dashboard.html'">📊 Dashboard</div>
+                    <div class="dropdown-item" onclick="location.href='editor.html'">✍️ New Book</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</div>
+                </div>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+    </nav>
+
+    <div style="padding-top:64px">
+        <!-- LIBRARY HEADER -->
+        <div style="background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:32px 24px">
+            <div class="container">
+                <h2 class="mb-2">📚 Public Library</h2>
+                <p>Discover thousands of stories from writers around the world.</p>
+                <div class="search-bar mt-3" style="max-width:600px">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search books, authors, genres..."
+                        oninput="searchBooks(this.value)" />
+                    <button class="btn btn-primary btn-sm"
+                        onclick="searchBooks(document.getElementById('searchInput').value)">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="padding-top:32px;padding-bottom:60px">
+            <!-- FILTERS -->
+            <div class="filter-tabs" id="filterTabs">
+                <div class="filter-tab active" onclick="filterBooks('all',this)">All</div>
+                <div class="filter-tab" onclick="filterBooks('Fantasy',this)">🐉 Fantasy</div>
+                <div class="filter-tab" onclick="filterBooks('Sci-Fi',this)">🚀 Sci-Fi</div>
+                <div class="filter-tab" onclick="filterBooks('Romance',this)">💕 Romance</div>
+                <div class="filter-tab" onclick="filterBooks('Mystery',this)">🔮 Mystery</div>
+                <div class="filter-tab" onclick="filterBooks('Thriller',this)">⚡ Thriller</div>
+                <div class="filter-tab" onclick="filterBooks('Horror',this)">👻 Horror</div>
+                <div class="filter-tab" onclick="filterBooks('Non-Fiction',this)">📰 Non-Fiction</div>
+            </div>
+
+            <!-- SORT -->
+            <div class="flex-between mb-3">
+                <div style="font-size:0.88rem;color:var(--text-muted)">
+                    Showing <span id="bookResultCount">0</span> books
+                </div>
+                <select class="input" style="width:auto;padding:6px 12px;font-size:0.85rem"
+                    onchange="sortBooks(this.value)">
+                    <option value="trending">🔥 Trending</option>
+                    <option value="newest">🆕 Newest</option>
+                    <option value="rating">⭐ Top Rated</option>
+                    <option value="reads">👁️ Most Read</option>
+                </select>
+            </div>
+
+            <!-- BOOKS GRID -->
+            <div class="books-grid stagger" id="libraryGrid"></div>
+
+            <!-- LOAD MORE -->
+            <div class="text-center mt-3">
+                <button class="btn btn-secondary" id="loadMoreBtn" onclick="loadMoreBooks()">Load More Books</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOK DETAIL MODAL -->
+    <div class="modal-overlay" id="bookDetailModal">
+        <div class="modal" style="max-width:560px">
+            <div class="modal-header">
+                <h3 id="modalBookTitle">Book Title</h3>
+                <button class="modal-close" onclick="closeModal('bookDetailModal')">✕</button>
+            </div>
+            <div style="display:flex;gap:20px;margin-bottom:20px">
+                <div id="modalBookCover"
+                    style="width:100px;height:140px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem">
+                </div>
+                <div>
+                    <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:6px">by <span
+                            id="modalBookAuthor"></span></div>
+                    <div class="badge mb-2" id="modalBookCategory"></div>
+                    <div style="display:flex;gap:16px;font-size:0.82rem;color:var(--text-muted)">
+                        <span>⭐ <span id="modalBookRating"></span></span>
+                        <span>👁️ <span id="modalBookReads"></span></span>
+                        <span>❤️ <span id="modalBookLikes"></span></span>
+                    </div>
+                </div>
+            </div>
+            <p id="modalBookDesc" style="font-size:0.9rem;margin-bottom:20px"></p>
+            <div style="display:flex;gap:10px">
+                <button class="btn btn-primary" style="flex:1;justify-content:center" id="readBookBtn">📖 Read
+                    Now</button>
+                <button class="btn btn-secondary" onclick="addToReadingList()" id="addToListBtn">+ Reading List</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initLibrary();
+    </script>
+    <script src="js/page-settings.js"></script>
+</body>
+
+</html>

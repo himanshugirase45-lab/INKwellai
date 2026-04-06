@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Inkwell</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <button onclick="history.back()" class="btn btn-secondary btn-sm"
+            style="margin-right:8px;display:flex;align-items:center;gap:6px;flex-shrink:0">← Back</button>
+        <a href="index.html" class="navbar-brand">
+            <div class="logo-icon">📖</div><span>Inkwell</span>
+        </a>
+        <div class="navbar-nav">
+            <a href="index.html">Home</a>
+            <a href="library.html">Library</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="editor.html">Write</a>
+        </div>
+        <div class="navbar-actions">
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <button onclick="showTab('settings')" id="pageSettingsBtn" title="Settings" class="btn-icon"
+                style="font-size:1rem">⚙️</button>
+            <div class="dropdown">
+                <div class="avatar" id="userAvatar" onclick="toggleDropdown('userMenu')">JD</div>
+                <div class="dropdown-menu" id="userMenu">
+                    <div class="dropdown-item" onclick="location.href='dashboard.html'">👤 Profile</div>
+                    <div class="dropdown-item" onclick="location.href='dashboard.html'">📊 Dashboard</div>
+                    <div class="dropdown-item" onclick="location.href='editor.html'">✍️ New Book</div>
+                    <div class="dropdown-item" onclick="location.href='admin.html'">⚙️ Admin Panel</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</div>
+                </div>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Main</div>
+                <div class="sidebar-item active" onclick="showTab('overview')">
+                    <span class="icon">📊</span> Overview
+                </div>
+                <div class="sidebar-item" onclick="showTab('mybooks')">
+                    <span class="icon">📚</span> My Books <span class="count" id="bookCount">0</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('drafts')">
+                    <span class="icon">📝</span> Drafts <span class="count">2</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('reading')">
+                    <span class="icon">👁️</span> Reading List
+                </div>
+                <div class="sidebar-item" onclick="showTab('bookmarks')">
+                    <span class="icon">🔖</span> Bookmarks
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Analytics</div>
+                <div class="sidebar-item" onclick="showTab('analytics')">
+                    <span class="icon">📈</span> Analytics
+                </div>
+                <div class="sidebar-item" onclick="showTab('comments')">
+                    <span class="icon">💬</span> Comments <span class="count">5</span>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-label">Account</div>
+                <div class="sidebar-item" onclick="showTab('profile')">
+                    <span class="icon">👤</span> Profile
+                </div>
+                <div class="sidebar-item" onclick="showTab('settings')">
+                    <span class="icon">⚙️</span> Settings
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- OVERVIEW TAB -->
+            <div id="tab-overview">
+                <div class="flex-between mb-3">
+                    <div>
+                        <h2>Good morning, <span class="text-accent" id="dashUsername">Writer</span> 👋</h2>
+                        <p class="mt-1">Here's what's happening with your books today.</p>
+                    </div>
+                    <a href="editor.html" class="btn btn-primary">✍️ New Book</a>
+                </div>
+
+                <div class="stats-grid stagger">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-value" id="statBooks">0</div>
+                        <div class="stat-label">Published Books</div>
+                        <div class="stat-change">↑ 2 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-value">12.4K</div>
+                        <div class="stat-label">Total Reads</div>
+                        <div class="stat-change">↑ 18% this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-value">847</div>
+                        <div class="stat-label">Total Likes</div>
+                        <div class="stat-change">↑ 34 today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Comments</div>
+                        <div class="stat-change">5 new today</div>
+                    </div>
+                </div>
+
+                <!-- Continue Reading -->
+                <div class="card mb-3">
+                    <div class="flex-between mb-2">
+                        <h3>Continue Reading</h3>
+                        <a href="library.html" class="btn btn-ghost btn-sm">View all</a>
+                    </div>
+                    <div id="continueReading"></div>
+                </div>
+
+                <!-- Recent Books -->
+                <div>
+                    <div class="flex-between mb-2">
+                        <h3>My Recent Books</h3>
+                        <button class="btn btn-ghost btn-sm" onclick="showTab('mybooks')">View all</button>
+                    </div>
+                    <div class="books-grid stagger" id="recentBooksGrid"></div>
+                </div>
+            </div>
+
+            <!-- MY BOOKS TAB -->
+            <div id="tab-mybooks" class="hidden">
+                <div class="flex-between mb-3">
+                    <h2>My Books</h2>
+                    <a href="editor.html" class="btn btn-primary">✍️ New Book</a>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="filterMyBooks('all',this)">All</div>
+                    <div class="tab" onclick="filterMyBooks('published',this)">Published</div>
+                    <div class="tab" onclick="filterMyBooks('draft',this)">Drafts</div>
+                </div>
+                <div class="books-grid stagger" id="myBooksGrid"></div>
+            </div>
+
+            <!-- DRAFTS TAB -->
+            <div id="tab-drafts" class="hidden">
+                <h2 class="mb-3">Drafts</h2>
+                <div id="draftsList"></div>
+            </div>
+
+            <!-- READING LIST TAB -->
+            <div id="tab-reading" class="hidden">
+                <h2 class="mb-3">Reading List</h2>
+                <div class="books-grid stagger" id="readingListGrid"></div>
+            </div>
+
+            <!-- BOOKMARKS TAB -->
+            <div id="tab-bookmarks" class="hidden">
+                <h2 class="mb-3">Bookmarks</h2>
+                <div id="bookmarksList"></div>
+            </div>
+
+            <!-- ANALYTICS TAB -->
+            <div id="tab-analytics" class="hidden">
+                <h2 class="mb-3">Analytics</h2>
+                <div class="stats-grid mb-3">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">12.4K</div>
+                        <div class="stat-label">Total Views</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value">8.2K</div>
+                        <div class="stat-label">Reading Hours</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔄</div>
+                        <div class="stat-value">94%</div>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="mb-3">Top Performing Books</h3>
+                    <div id="topBooks"></div>
+                </div>
+            </div>
+
+            <!-- COMMENTS TAB -->
+            <div id="tab-comments" class="hidden">
+                <h2 class="mb-3">Recent Comments</h2>
+                <div id="commentsList"></div>
+            </div>
+
+            <!-- PROFILE TAB -->
+            <div id="tab-profile" class="hidden">
+                <h2 class="mb-3">My Profile</h2>
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">JD</div>
+                    <div class="profile-info" style="flex:1">
+                        <h2 id="profileName">Jane Doe</h2>
+                        <div class="badge mt-1">✍️ Author</div>
+                        <p class="profile-bio" id="profileBio">Passionate storyteller and fantasy writer. I love
+                            creating worlds that readers can get lost in.</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="val" id="profileBooks">0</div>
+                                <div class="lbl">Books</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="val">12.4K</div>
+                                <div class="lbl">Reads</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="val">847</div>
+                                <div class="lbl">Likes</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="val">234</div>
+                                <div class="lbl">Followers</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="openModal('editProfileModal')">✏️ Edit Profile</button>
+                </div>
+                <h3 class="mb-2">Published Books</h3>
+                <div class="books-grid stagger" id="profileBooksGrid"></div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="tab-settings" class="hidden">
+                <h2 class="mb-3">Settings</h2>
+                <div class="card mb-3">
+                    <h3 class="mb-3">Appearance</h3>
+                    <div class="flex-between">
+                        <div>
+                            <h4>Dark Mode</h4>
+                            <p style="font-size:0.85rem">Toggle between dark and light theme</p>
+                        </div>
+                        <button class="btn btn-secondary" id="settingsThemeBtn" onclick="toggleTheme()">🌙 Dark</button>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <h3 class="mb-3">Notifications</h3>
+                    <div style="display:flex;flex-direction:column;gap:16px">
+                        <div class="flex-between"><span>New comments on my books</span><input type="checkbox" checked />
+                        </div>
+                        <div class="flex-between"><span>New followers</span><input type="checkbox" checked /></div>
+                        <div class="flex-between"><span>Weekly reading digest</span><input type="checkbox" /></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="mb-3">Danger Zone</h3>
+                    <button class="btn btn-danger" onclick="handleLogout()">🚪 Sign Out</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="input-group">
+                    <label>Display Name</label>
+                    <input class="input" type="text" id="editName" placeholder="Your name" />
+                </div>
+                <div class="input-group">
+                    <label>Bio</label>
+                    <textarea class="input" id="editBio" placeholder="Tell readers about yourself..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Avatar Emoji</label>
+                    <input class="input" type="text" id="editAvatar" placeholder="e.g. 🦋" maxlength="2" />
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="saveProfile()">Save
+                    Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW BOOK MODAL -->
+    <div class="modal-overlay" id="newBookModal">
+        <div class="modal" style="max-width:560px">
+            <div class="modal-header">
+                <h3>Create New Book</h3>
+                <button class="modal-close" onclick="closeModal('newBookModal')">✕</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="input-group">
+                    <label>Book Title</label>
+                    <input class="input" type="text" id="newBookTitle" placeholder="Enter your book title..." />
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea class="input" id="newBookDesc" placeholder="What's your book about?"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Category</label>
+                    <select class="input" id="newBookCategory">
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Biography">Biography</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Cover Emoji</label>
+                    <input class="input" type="text" id="newBookEmoji" placeholder="e.g. 🐉" maxlength="2" />
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center"
+                    onclick="createNewBook()">Create Book →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/app.js"></script>
+    <script>
+        initDashboard();
+    </script>
+</body>
+
+</html>
