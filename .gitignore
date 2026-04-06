@@ -9,6 +9,7 @@ yarn-error.log*
 
 # IDE / Editor Files
 .vscode/
+.cursor/
 .idea/
 .DS_Store
 
