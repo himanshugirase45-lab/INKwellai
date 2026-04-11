@@ -477,6 +477,11 @@ function toggleAIPanel() {
     if (panel) panel.classList.toggle('show');
 }
 
+function toggleSidebar() {
+    const sidebar = document.getElementById('editorSidebar');
+    if (sidebar) sidebar.classList.toggle('hidden');
+}
+
 const SYSTEM_PROMPT = `You are an AI Writing Assistant integrated directly into a book writing platform. 
 
 If the user asks you to WRITE, GENERATE, or CONTINUE a story, chapter, or text:

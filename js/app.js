@@ -73,19 +73,20 @@ function showToast(message, type = 'info', duration = 3000) {
 // ===== MODAL =====
 function openModal(id) {
     const el = document.getElementById(id);
-    if (el) { el.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    if (el) { el.classList.add('active', 'on'); document.body.style.overflow = 'hidden'; }
 }
 function closeModal(id) {
     const el = document.getElementById(id);
-    if (el) { el.classList.remove('active'); document.body.style.overflow = ''; }
+    if (el) { el.classList.remove('active', 'on'); document.body.style.overflow = ''; }
 }
+function openM(id) { openModal(id); }
+function closeM(id) { closeModal(id); }
 function switchModal(from, to) { closeModal(from); setTimeout(() => openModal(to), 200); }
 
 // Close modal on overlay click
 document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
-        e.target.classList.remove('active');
-        document.body.style.overflow = '';
+    if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('overlay')) {
+        closeModal(e.target.id);
     }
 });
 
@@ -373,6 +374,7 @@ function filterMyBooks(filter, el) {
 function renderContinueReading() {
     const el = document.getElementById('continueReading');
     if (!el) return;
+    el.innerHTML = '';
     const progress = JSON.parse(localStorage.getItem('readingProgress') || '{}');
     const books = Object.keys(progress).map(id => {
         const book = SAMPLE_BOOKS.find(b => b.id == id);
@@ -397,6 +399,14 @@ function renderContinueReading() {
       <a href="reader.html?id=${book.id}" class="btn btn-secondary btn-sm">Continue</a>`;
         el.appendChild(item);
     });
+}
+
+function clearContinueReading() {
+    if (confirm('Are you sure you want to clear your reading progress?')) {
+        localStorage.removeItem('readingProgress');
+        renderContinueReading();
+        showToast('Reading progress cleared', 'info');
+    }
 }
 
 function renderDrafts(books) {

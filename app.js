@@ -56,10 +56,28 @@
         }
 
         /* ── MODAL ── */
-        function openM(id) { const e = document.getElementById(id); if (e) { e.classList.add('on'); document.body.style.overflow = 'hidden' } }
-        function closeM(id) { const e = document.getElementById(id); if (e) { e.classList.remove('on'); document.body.style.overflow = '' } }
+        function openM(id) { 
+            const e = document.getElementById(id); 
+            if (e) { 
+                e.classList.add('on', 'active'); 
+                document.body.style.overflow = 'hidden' 
+            } 
+        }
+        function closeM(id) { 
+            const e = document.getElementById(id); 
+            if (e) { 
+                e.classList.remove('on', 'active'); 
+                document.body.style.overflow = '' 
+            } 
+        }
+        function openModal(id) { openM(id); }
+        function closeModal(id) { closeM(id); }
         function swapM(a, b) { closeM(a); setTimeout(() => openM(b), 220) }
-        document.addEventListener('click', e => { if (e.target.classList.contains('overlay')) { e.target.classList.remove('on'); document.body.style.overflow = '' } });
+        document.addEventListener('click', e => { 
+            if (e.target.classList.contains('overlay') || e.target.classList.contains('modal-overlay')) { 
+                closeModal(e.target.id);
+            } 
+        });
 
         /* ── TOAST ── */
         function toast(msg, type = 'info') {

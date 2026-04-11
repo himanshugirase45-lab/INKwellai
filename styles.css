@@ -1,4 +1,4 @@
-﻿/* ── RESET & BASE ── */
+/* ── RESET & BASE ── */
         *,
         *::before,
         *::after {
@@ -1651,7 +1651,7 @@
 
         .overlay.on {
             opacity: 1;
-            pointer-events: all
+            pointer-events: auto
         }
 
         .modal {
@@ -2285,7 +2285,7 @@
 
         .settings-backdrop.on {
             opacity: 1;
-            pointer-events: all;
+            pointer-events: auto;
         }
 
         .settings-panel {
@@ -2293,7 +2293,7 @@
             top: 70px;
             right: 0;
             bottom: 0;
-            z-index: 900;
+            z-index: 1100;
             width: 340px;
             background: #13131c;
             border-left: 1px solid var(--border2);

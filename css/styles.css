@@ -381,7 +381,7 @@ textarea.input {
 
 .modal-overlay.active {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: auto;
 }
 
 .modal {
@@ -980,14 +980,7 @@ textarea.input {
     padding-top: 64px;
 }
 
-.editor-sidebar {
-    width: 280px;
-    background: var(--bg-secondary);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
+
 
 .editor-sidebar-header {
     padding: 16px;
@@ -1039,42 +1032,180 @@ textarea.input {
     overflow: hidden;
 }
 
-.editor-toolbar {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
+/* ===== RIBBON TOOLBAR (MS Word Style) ===== */
+.ribbon-tabs-container {
     display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 2px 16px 0;
     background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: var(--transition);
 }
 
-.toolbar-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background: transparent;
+.ribbon-tabs {
+    display: flex;
+    gap: 2px;
+    align-items: stretch;
+}
+
+.ribbon-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.82rem;
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: -1px;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.ribbon-tab:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.ribbon-tab.active {
+    color: var(--accent-light) !important;
+    background: var(--bg-primary) !important;
+    border: 1px solid var(--border) !important;
+    border-bottom: 2px solid var(--accent) !important;
+    font-weight: 600;
+}
+
+.ribbon-tab.file-tab:hover {
+    background: #004a8f !important;
+    color: #fff !important;
+}
+
+.editor-toolbar {
+    display: flex;
+    padding: 8px 12px 14px;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    background: var(--bg-primary);
+    height: 104px;
+    flex-shrink: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    flex-wrap: nowrap !important;
+    transition: var(--transition);
+}
+
+.ribbon-group {
+    display: flex;
+    align-items: stretch;
+    border-right: 1px solid var(--border);
+    padding-right: 8px;
+    margin-right: 6px;
+    position: relative;
+    min-height: 70px;
+}
+
+.ribbon-group-label {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+.ribbon-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    gap: 4px;
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+.ribbon-button:hover {
+    background: var(--bg-hover);
+}
+
+.ribbon-button i, .ribbon-button span.icon {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+}
+
+.ribbon-button span.label {
+    font-size: 0.72rem;
+}
+
+.ribbon-sub-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    margin-left: 4px;
+}
+
+.ribbon-sub-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.ribbon-sub-button:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.ribbon-select {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.75rem;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.ribbon-style-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 16px;
+    cursor: pointer;
+    background: var(--bg-secondary);
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
 }
 
-.toolbar-btn:hover {
+.ribbon-style-card:hover {
     background: var(--bg-hover);
-    color: var(--text-primary);
+    border-color: var(--accent);
 }
 
-.toolbar-btn.active {
-    background: var(--accent-glow);
-    color: var(--accent);
+.ribbon-style-card span {
+    font-size: 0.8rem;
+    color: var(--text-primary);
 }
 
 .toolbar-divider {
     width: 1px;
-    height: 24px;
+    height: 16px;
     background: var(--border);
     margin: 0 4px;
 }
@@ -1167,6 +1298,30 @@ textarea.input {
     flex-direction: column;
     overflow: hidden;
     transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.ai-panel:not(.show) {
+    width: 0;
+    border-left: none;
+    opacity: 0;
+}
+
+.editor-sidebar {
+    width: 280px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.editor-sidebar.hidden {
+    width: 0;
+    border-right: none;
+    opacity: 0;
 }
 
 .ai-panel-header {
@@ -1549,7 +1704,7 @@ textarea.input {
 
 .dropdown-menu.open {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: auto;
     transform: translateY(0);
 }
 

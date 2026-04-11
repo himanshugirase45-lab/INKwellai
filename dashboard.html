@@ -130,7 +130,10 @@
                 <div class="card mb-3">
                     <div class="flex-between mb-2">
                         <h3>Continue Reading</h3>
-                        <a href="library.html" class="btn btn-ghost btn-sm">View all</a>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="clearContinueReading()" class="btn btn-ghost btn-sm" style="color:var(--danger)">Clear all</button>
+                            <a href="library.html" class="btn btn-ghost btn-sm">View all</a>
+                        </div>
                     </div>
                     <div id="continueReading"></div>
                 </div>

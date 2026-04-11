@@ -13,130 +13,176 @@
 <body>
 
     <nav class="navbar">
-        <button onclick="history.back()" class="btn btn-secondary btn-sm"
-            style="margin-right:8px;display:flex;align-items:center;gap:6px;flex-shrink:0">← Back</button>
-        <a href="index.html" class="navbar-brand">
-            <div class="logo-icon">📖</div><span>Inkwell</span>
-        </a>
-        <div class="navbar-nav">
-            <a href="index.html">Home</a>
-            <a href="library.html" class="active">Library</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="editor.html">Write</a>
-        </div>
-        <div class="navbar-actions">
-            <button class="theme-toggle" id="themeToggle">🌙</button>
-            <button onclick="togglePageSettings()" id="pageSettingsBtn" title="Settings" class="btn-icon"
-                style="font-size:1rem">⚙️</button>
-            <div class="dropdown">
-                <div class="avatar" onclick="toggleDropdown('userMenu')">JD</div>
-                <div class="dropdown-menu" id="userMenu">
-                    <div class="dropdown-item" onclick="location.href='dashboard.html'">👤 Profile</div>
-                    <div class="dropdown-item" onclick="location.href='dashboard.html'">📊 Dashboard</div>
-                    <div class="dropdown-item" onclick="location.href='editor.html'">✍️ New Book</div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</div>
-                </div>
+        <div class="nav-container" style="display:flex; align-items:center; width:100%; height:100%; max-width:1400px; margin:0 auto; padding:0 24px">
+            <button onclick="history.back()" class="btn btn-secondary btn-sm"
+                style="margin-right:16px;display:flex;align-items:center;gap:6px;flex-shrink:0">← Back</button>
+            <a href="index.html" class="navbar-brand">
+                <div class="logo-icon">📖</div><span>Inkwell</span>
+            </a>
+            <div class="navbar-nav" style="margin-left:40px">
+                <a href="index.html">Home</a>
+                <a href="library.html" class="active">Library</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="editor.html">Write</a>
             </div>
-            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            <div class="navbar-actions" style="margin-left:auto">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <div class="dropdown">
+                    <div class="avatar" id="userAvatar" onclick="toggleDropdown('userMenu')">JD</div>
+                    <div class="dropdown-menu" id="userMenu">
+                        <div class="dropdown-item" onclick="location.href='dashboard.html'">👤 Profile</div>
+                        <div class="dropdown-item" onclick="location.href='dashboard.html'">📊 Dashboard</div>
+                        <div class="dropdown-item" onclick="location.href='editor.html'">✍️ New Book</div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</div>
+                    </div>
+                </div>
+                <div class="hamburger" id="hamburger" style="margin-left:12px"><span></span><span></span><span></span></div>
+            </div>
         </div>
-    </nav>
-    </div>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-    </div>
     </nav>
 
     <div style="padding-top:64px">
-        <!-- LIBRARY HEADER -->
-        <div style="background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:32px 24px">
-            <div class="container">
-                <h2 class="mb-2">📚 Public Library</h2>
-                <p>Discover thousands of stories from writers around the world.</p>
-                <div class="search-bar mt-3" style="max-width:600px">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search books, authors, genres..."
-                        oninput="searchBooks(this.value)" />
-                    <button class="btn btn-primary btn-sm"
-                        onclick="searchBooks(document.getElementById('searchInput').value)">Search</button>
+        <!-- LIBRARY HERO -->
+        <div class="library-hero" style="position:relative; overflow:hidden; padding:120px 0 100px; background:linear-gradient(135deg, var(--bg-primary), var(--bg-secondary)); border-bottom:1px solid var(--border)">
+            <div class="container" style="position:relative; z-index:2">
+                <div style="max-width:850px; margin:0 auto; text-align:center">
+                    <div class="eyebrow" style="margin-bottom:24px; justify-content:center; background:rgba(124,106,247,0.1); color:var(--accent); border:1px solid var(--accent-glow)">✨ Discover Your Next Story</div>
+                    <h1 style="font-size:4.5rem; font-weight:800; margin-bottom:24px; color:var(--text-primary); line-height:1; letter-spacing:-2px">
+                        Explore the <span style="background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent">Inkwell Library</span>
+                    </h1>
+                    <p style="font-size:1.25rem; color:var(--text-secondary); margin-bottom:48px; max-width:650px; margin-left:auto; margin-right:auto; line-height:1.6">
+                        Unlock thousands of worlds crafted by indie authors. From epic high fantasy to gritty cyberpunk thrillers, your next favorite book is waiting.
+                    </p>
+                    <div class="search-bar" style="max-width:700px; margin:0 auto; background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow-glow); padding:8px; border-radius:20px; display:flex; align-items:center">
+                        <span class="search-icon" style="margin:0 15px; font-size:1.2rem">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search by title, author, or keyword..."
+                            oninput="searchBooks(this.value)" style="background:transparent; color:var(--text-primary); border:none; flex:1; padding:15px 10px; outline:none; font-size:1.1rem" />
+                        <button class="btn btn-primary" onclick="searchBooks(document.getElementById('searchInput').value)" style="padding:15px 36px; border-radius:14px; font-weight:700; font-size:1rem">Discover</button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Animated Background Elements -->
+            <div style="position:absolute; top:-150px; left:-50px; width:600px; height:600px; background:var(--accent-glow); filter:blur(150px); border-radius:50%; pointer-events:none; opacity:0.3"></div>
+            <div style="position:absolute; bottom:-100px; right:-50px; width:500px; height:500px; background:rgba(168, 85, 247, 0.1); filter:blur(120px); border-radius:50%; pointer-events:none; opacity:0.3"></div>
+            <div style="position:absolute; top:15%; right:8%; font-size:18rem; opacity:0.02; pointer-events:none; transform: rotate(15deg)">📚</div>
+            <div style="position:absolute; bottom:15%; left:8%; font-size:14rem; opacity:0.02; pointer-events:none; transform: rotate(-10deg)">✍️</div>
+        </div>
+
+        <!-- GENRE MARQUEE -->
+        <div class="marquee-wrap" style="background:var(--bg-card); border-bottom:1px solid var(--border); padding:24px 0; overflow:hidden">
+            <div class="marquee-track" style="display:flex; white-space:nowrap; gap:80px; animation: scrollMarquee 60s linear infinite;">
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🐉 Fantasy Adventure ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🚀 Cyberpunk Sci-Fi ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">💕 Modern Romance ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🔮 Dark Mystery ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">⚡ High Thriller ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">👻 Supernatural Horror ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">📰 Non-Fiction Gems ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">✒️ Epic Poetry ✦</div>
+                <!-- Duplicate for seamless loop -->
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🐉 Fantasy Adventure ✦</div>
+                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🚀 Cyberpunk Sci-Fi ✦</div>
             </div>
         </div>
 
-        <div class="container" style="padding-top:32px;padding-bottom:60px">
-            <!-- FILTERS -->
-            <div class="filter-tabs" id="filterTabs">
-                <div class="filter-tab active" onclick="filterBooks('all',this)">All</div>
-                <div class="filter-tab" onclick="filterBooks('Fantasy',this)">🐉 Fantasy</div>
-                <div class="filter-tab" onclick="filterBooks('Sci-Fi',this)">🚀 Sci-Fi</div>
-                <div class="filter-tab" onclick="filterBooks('Romance',this)">💕 Romance</div>
-                <div class="filter-tab" onclick="filterBooks('Mystery',this)">🔮 Mystery</div>
-                <div class="filter-tab" onclick="filterBooks('Thriller',this)">⚡ Thriller</div>
-                <div class="filter-tab" onclick="filterBooks('Horror',this)">👻 Horror</div>
-                <div class="filter-tab" onclick="filterBooks('Non-Fiction',this)">📰 Non-Fiction</div>
+        <div class="container" style="padding-top:80px;padding-bottom:120px">
+            <!-- FILTERS & TOOLS -->
+            <div style="background:var(--bg-secondary); padding:28px; border-radius:28px; border:1px solid var(--border); margin-bottom:56px; box-shadow:var(--shadow)">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:28px; flex-wrap:wrap">
+                    <div class="filter-tabs" id="filterTabs" style="margin-bottom:0; background:transparent; padding:0; display:flex; gap:10px">
+                        <div class="filter-tab active" onclick="filterBooks('all',this)" style="padding:12px 24px; border-radius:14px">All Stories</div>
+                        <div class="filter-tab" onclick="filterBooks('Fantasy',this)" style="padding:12px 24px; border-radius:14px">Fantasy</div>
+                        <div class="filter-tab" onclick="filterBooks('Sci-Fi',this)" style="padding:12px 24px; border-radius:14px">Sci-Fi</div>
+                        <div class="filter-tab" onclick="filterBooks('Romance',this)" style="padding:12px 24px; border-radius:14px">Romance</div>
+                        <div class="filter-tab" onclick="filterBooks('Mystery',this)" style="padding:12px 24px; border-radius:14px">Mystery</div>
+                        <div class="filter-tab" onclick="filterBooks('Thriller',this)" style="padding:12px 24px; border-radius:14px">Thriller</div>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; gap:20px">
+                        <span style="font-size:0.9rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:1px">Sort By</span>
+                        <select class="input" style="width:auto;padding:14px 24px;font-size:0.95rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:14px; font-weight:600; cursor:pointer"
+                            onchange="sortBooks(this.value)">
+                            <option value="trending">🔥 Trending Now</option>
+                            <option value="newest">🆕 Recently Released</option>
+                            <option value="rating">⭐ Best Rated</option>
+                            <option value="reads">👁️ Most Read</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <!-- SORT -->
-            <div class="flex-between mb-3">
-                <div style="font-size:0.88rem;color:var(--text-muted)">
-                    Showing <span id="bookResultCount">0</span> books
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:48px">
+                <div style="height:1px; flex:1; background:var(--border)"></div>
+                <div style="font-size:1rem; color:var(--text-muted); font-weight:700; letter-spacing:1px">
+                    DISCOVERING <span id="bookResultCount" style="color:var(--accent)">0</span> REMARKABLE TITLES
                 </div>
-                <select class="input" style="width:auto;padding:6px 12px;font-size:0.85rem"
-                    onchange="sortBooks(this.value)">
-                    <option value="trending">🔥 Trending</option>
-                    <option value="newest">🆕 Newest</option>
-                    <option value="rating">⭐ Top Rated</option>
-                    <option value="reads">👁️ Most Read</option>
-                </select>
+                <div style="height:1px; flex:1; background:var(--border)"></div>
             </div>
 
             <!-- BOOKS GRID -->
-            <div class="books-grid stagger" id="libraryGrid"></div>
+            <div class="books-grid stagger" id="libraryGrid" style="gap:40px"></div>
 
             <!-- LOAD MORE -->
-            <div class="text-center mt-3">
-                <button class="btn btn-secondary" id="loadMoreBtn" onclick="loadMoreBooks()">Load More Books</button>
+            <div class="text-center" style="margin-top:80px">
+                <button class="btn btn-secondary" id="loadMoreBtn" onclick="loadMoreBooks()" style="padding:18px 60px; font-size:1.15rem; border-radius:18px; font-weight:700; background:var(--bg-card); border-color:var(--border-light); transition:var(--transition)">
+                    Load More Stories
+                </button>
             </div>
         </div>
     </div>
 
     <!-- BOOK DETAIL MODAL -->
     <div class="modal-overlay" id="bookDetailModal">
-        <div class="modal" style="max-width:560px">
-            <div class="modal-header">
-                <h3 id="modalBookTitle">Book Title</h3>
-                <button class="modal-close" onclick="closeModal('bookDetailModal')">✕</button>
+        <div class="modal" style="max-width:700px; border-radius:32px; background:var(--bg-card); backdrop-filter:blur(20px); border:1px solid var(--border)">
+            <div class="modal-header" style="padding:32px 40px; border-bottom:1px solid var(--border)">
+                <h3 id="modalBookTitle" style="font-size:1.75rem; font-weight:800; color:var(--text-primary)">Book Title</h3>
+                <button class="modal-close" onclick="closeModal('bookDetailModal')" style="font-size:1.5rem">✕</button>
             </div>
-            <div style="display:flex;gap:20px;margin-bottom:20px">
-                <div id="modalBookCover"
-                    style="width:100px;height:140px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem">
-                </div>
-                <div>
-                    <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:6px">by <span
-                            id="modalBookAuthor"></span></div>
-                    <div class="badge mb-2" id="modalBookCategory"></div>
-                    <div style="display:flex;gap:16px;font-size:0.82rem;color:var(--text-muted)">
-                        <span>⭐ <span id="modalBookRating"></span></span>
-                        <span>👁️ <span id="modalBookReads"></span></span>
-                        <span>❤️ <span id="modalBookLikes"></span></span>
+            <div style="padding:40px">
+                <div style="display:flex;gap:40px;margin-bottom:40px; align-items:flex-start">
+                    <div id="modalBookCover"
+                        style="width:180px;height:260px;border-radius:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:6rem; box-shadow:var(--shadow); transform:rotate(-2deg)">
+                    </div>
+                    <div style="flex:1">
+                        <div style="font-size:1.1rem;color:var(--text-muted);margin-bottom:12px; font-weight:500">Written by <span
+                                id="modalBookAuthor" style="color:var(--text-primary); font-weight:800"></span></div>
+                        <div class="badge mb-4" id="modalBookCategory" style="padding:8px 18px; font-size:0.9rem; font-weight:700"></div>
+                        <div style="display:flex;gap:24px;font-size:1rem;color:var(--text-secondary); background:var(--bg-hover); padding:20px; border-radius:20px; border:1px solid var(--border)">
+                            <div style="text-align:center; flex:1"><div style="color:var(--warning); margin-bottom:6px; font-size:1.2rem">⭐</div><div id="modalBookRating" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Rating</div></div>
+                            <div style="text-align:center; flex:1"><div style="color:var(--accent); margin-bottom:6px; font-size:1.2rem">👁️</div><div id="modalBookReads" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Reads</div></div>
+                            <div style="text-align:center; flex:1"><div style="color:var(--danger); margin-bottom:6px; font-size:1.2rem">❤️</div><div id="modalBookLikes" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Likes</div></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <p id="modalBookDesc" style="font-size:0.9rem;margin-bottom:20px"></p>
-            <div style="display:flex;gap:10px">
-                <button class="btn btn-primary" style="flex:1;justify-content:center" id="readBookBtn">📖 Read
-                    Now</button>
-                <button class="btn btn-secondary" onclick="addToReadingList()" id="addToListBtn">+ Reading List</button>
+                <h4 style="font-size:1.25rem; margin-bottom:16px; color:var(--text-primary); font-weight:700">About this story</h4>
+                <p id="modalBookDesc" style="font-size:1.1rem; line-height:1.8; color:var(--text-secondary); margin-bottom:40px"></p>
+                <div style="display:flex;gap:20px">
+                    <button class="btn btn-primary" style="flex:2;justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px; font-weight:700" id="readBookBtn">📖 Read Now</button>
+                    <button class="btn btn-secondary" onclick="addToReadingList()" id="addToListBtn" style="flex:1; justify-content:center; border-radius:20px; font-weight:600">+ Reading List</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="toast-container" id="toastContainer"></div>
+    <style>
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .filter-tab { transition: var(--transition); border: 1px solid transparent; }
+        .filter-tab:hover { background: var(--bg-hover); border-color: var(--border); }
+        .filter-tab.active { background: var(--accent); color: white; border-color: var(--accent); shadow: var(--shadow-glow); }
+        .book-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .book-card:hover { transform: translateY(-10px) scale(1.02); }
+    </style>
+
     <div class="toast-container" id="toastContainer"></div>
     <script src="js/app.js"></script>
     <script>
         initLibrary();
     </script>
-    <script src="js/page-settings.js"></script>
 </body>
 
 </html>
