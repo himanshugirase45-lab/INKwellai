@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Login — Inkwell</title>
+    <title>Create Account — Inkwell</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -260,28 +260,30 @@
 
     <div class="auth-page">
         <div class="auth-container">
-            <div class="auth-logo">📖</div>
-            <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-sub">Log in to continue your writing journey.</p>
+            <div class="auth-logo">✨</div>
+            <h1 class="auth-title">Join Inkwell</h1>
+            <p class="auth-sub">Start your masterpiece today. It only takes a minute.</p>
 
-            <form onsubmit="handleLoginSubmit(event)">
+            <form onsubmit="handleSignupSubmit(event)">
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" class="inp" id="sName" placeholder="Your name" required />
+                </div>
+
                 <div class="field">
                     <label>Email Address</label>
-                    <input type="email" class="inp" id="lEmail" placeholder="you@example.com" required />
+                    <input type="email" class="inp" id="sEmail" placeholder="you@example.com" required />
                 </div>
                 
-                <div style="display:flex; justify-content: space-between; align-items: baseline;">
-                    <label style="font-size: 0.85rem; font-weight: 600; color: var(--text2);">Password</label>
-                    <a href="#" style="font-size: 0.78rem; color: var(--violet2); text-decoration: none; font-weight: 600;">Forgot password?</a>
-                </div>
-                <div class="field" style="margin-top: 8px;">
-                    <input type="password" class="inp" id="lPass" placeholder="••••••••" required />
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" class="inp" id="sPass" placeholder="Min. 8 characters" required />
                 </div>
 
-                <button type="submit" class="btn-auth">Login</button>
+                <button type="submit" class="btn-auth">Create Account</button>
             </form>
 
-            <div class="auth-divider">or continue with</div>
+            <div class="auth-divider">or join with</div>
 
             <button class="btn-social" type="button" onclick="doGoogleLogin()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -294,13 +296,14 @@
             </button>
 
             <div class="auth-switch">
-                Don't have an account? <a href="signup.html">Sign up</a>
+                Already have an account? <a href="login.html">Log in</a>
             </div>
         </div>
     </div>
 
     <div class="toasts" id="toasts"></div>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     
@@ -322,25 +325,15 @@
         
         window.auth = firebase.auth();
         window.googleProvider = new firebase.auth.GoogleAuthProvider();
-        
-        // Ensure they are available as local variables for any script following this
-        window.auth = window.auth;
-        window.googleProvider = window.googleProvider;
-        
-        // Setup simple aliases in case app.js expects them in global scope
-        window.auth = window.auth;
-        window.googleProvider = window.googleProvider;
       })();
     </script>
     
     <script src="app.js"></script>
     <script>
-        function handleLoginSubmit(e) {
+        function handleSignupSubmit(e) {
             e.preventDefault();
-            // We use the existing logic from app.js to handle login securely
-            doLogin(); 
-            // In app.js, doLogin gets the values by ID ('lEmail' and 'lPass')
-            // It will also trigger the toast and redirect to dashboard.html
+            // We use the existing logic from app.js to handle signup securely
+            doSignup(); 
         }
     </script>
 </body>

@@ -23,13 +23,13 @@
         <div class="nav-links">
             <a href="index.html" class="active">Home</a>
             <a href="library.html">Library</a>
-            <a href="dashboard.html" onclick="if(!localStorage.getItem('user') || localStorage.getItem('user') === 'null') { event.preventDefault(); location.href='login.html'; toast('Please sign in to access the dashboard', 'error'); }">Dashboard</a>
+            <a href="dashboard.html" onclick="if(!localStorage.getItem('user') || localStorage.getItem('user') === 'null') { event.preventDefault(); location.href='login.html'; toast('Please log in to access the dashboard', 'error'); }">Dashboard</a>
             <a href="editor.html">Write</a>
         </div>
         <div class="nav-right">
             <button class="nav-settings-btn" onclick="toggleSettings()" id="settingsBtn" title="Settings">⚙️</button>
-            <button class="nav-signin" onclick="location.href='login.html'">Sign In</button>
-            <button class="nav-cta" onclick="location.href='login.html'">Get Started</button>
+            <button class="nav-signin" onclick="location.href='login.html'">Login</button>
+            <button class="nav-cta" onclick="location.href='signup.html'">Get Started</button>
             <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
         </div>
     </nav>
@@ -534,7 +534,7 @@
             <p class="cta-p">Join 50,000+ writers who have already published their first book on Inkwell. No credit card
                 required.</p>
             <div class="cta-btns">
-                <button class="btn-gold" style="padding:14px 30px;font-size:.95rem" onclick="location.href='login.html'">Create
+                <button class="btn-gold" style="padding:14px 30px;font-size:.95rem" onclick="location.href='signup.html'">Create
                     Free Account</button>
                 <a href="library.html" class="btn-outline" style="padding:14px 30px;font-size:.95rem">Explore
                     Library</a>
@@ -600,10 +600,10 @@
                     id="lEmail" /></div>
             <div class="field"><label>Password</label><input class="inp" type="password" placeholder="••••••••"
                     id="lPass" /></div>
-            <button class="btn-modal" onclick="doLogin()">Sign In</button>
+            <button class="btn-modal" onclick="doLogin()">Login</button>
             <div style="display:flex;align-items:center;margin:15px 0;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px"><hr style="flex:1;opacity:.1;margin-right:10px">or<hr style="flex:1;opacity:.1;margin-left:10px"></div>
             <button class="btn-modal" onclick="doGoogleLogin()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--text);margin-bottom:15px">
-                <span style="margin-right:8px">G</span> Sign in with Google
+                <span style="margin-right:8px">G</span> Log in with Google
             </button>
             <div class="modal-switch">No account? <a href="#" onclick="swapM('loginM','signupM')">Sign up</a></div>
         </div>
@@ -624,7 +624,7 @@
             <button class="btn-modal" onclick="doGoogleLogin()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--text);margin-bottom:15px">
                 <span style="margin-right:8px">G</span> Sign up with Google
             </button>
-            <div class="modal-switch">Have an account? <a href="#" onclick="swapM('signupM','loginM')">Sign in</a></div>
+            <div class="modal-switch">Have an account? <a href="#" onclick="swapM('signupM','loginM')">Log in</a></div>
         </div>
     </div>
     <div class="overlay" id="detailM">

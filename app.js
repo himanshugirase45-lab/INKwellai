@@ -136,7 +136,7 @@
                 })
                 .catch((error) => {
                     console.error('Google Sign-In Error:', error);
-                    toast('Google Sign-In failed: ' + error.message, 'error');
+                    toast('Google Login failed: ' + error.message, 'error');
                 });
         }
 
