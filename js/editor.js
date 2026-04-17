@@ -35,33 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = document.getElementById('editorContent');
     const chapterTitle = document.getElementById('chapterTitle');
 
-    let zenTimer = null;
-    function activateZenMode() {
-        document.body.classList.add('zen-active');
-        clearTimeout(zenTimer);
-        zenTimer = setTimeout(() => {
-            document.body.classList.remove('zen-active');
-        }, 3000); // 3 seconds idle removes Zen Mode
-    }
-
-    // Wake up from Zen mode on mouse move
-    document.addEventListener('mousemove', () => {
-        document.body.classList.remove('zen-active');
-    });
-
     // Handle text selection for floating AI menu
     document.addEventListener('selectionchange', handleInlineSelection);
 
     if (content) {
         content.addEventListener('input', () => {
-            activateZenMode();
             updateWordCount();
             scheduleAutoSave();
         });
     }
     if (chapterTitle) {
         chapterTitle.addEventListener('input', () => {
-            activateZenMode();
             if (editorState.chapters[editorState.currentChapter]) {
                 editorState.chapters[editorState.currentChapter].title = chapterTitle.value;
                 renderChapterList();
@@ -643,6 +627,35 @@ function toggleVoice() {
     showToast('🎙️ Listening... Speak now', 'info');
 }
 
+// ===== TEXT TO SPEECH =====
+function toggleReading() {
+    const content = document.getElementById('editorContent');
+    const text = content ? content.innerText : "";
+    
+    if (!text || text.trim().length === 0) {
+        showToast("No content to read. Start writing first!", "warning");
+        return;
+    }
+
+    const btnNav = document.getElementById('editorListenBtnNavbar');
+    const btnTools = document.getElementById('editorListenBtnTools');
+
+    SpeechEngine.toggle(
+        text,
+        () => {
+            // On End
+            if (btnNav) btnNav.innerHTML = '🎧 Listen';
+            if (btnTools) btnTools.querySelector('.label').textContent = 'Read Aloud';
+        },
+        () => {
+            // On Start
+            if (btnNav) btnNav.innerHTML = '⏹️ Stop';
+            if (btnTools) btnTools.querySelector('.label').textContent = 'Stop Reading';
+            showToast('Reading your story...', 'info');
+        }
+    );
+}
+
 // ===== INLINE AI REWRITER =====
 let currentInlineSelection = null;
 let currentInlineRange = null;
@@ -664,8 +677,8 @@ function handleInlineSelection() {
             currentInlineRange = range.cloneRange();
 
             floatingMenu.style.display = 'flex';
-            floatingMenu.style.top = (rect.top - editorRect.top - 50) + 'px';
-            floatingMenu.style.left = Math.max(0, (rect.left - editorRect.left + (rect.width/2) - (floatingMenu.offsetWidth/2))) + 'px';
+            floatingMenu.style.top = (rect.top - 60) + 'px';
+            floatingMenu.style.left = (rect.left + rect.width/2 - floatingMenu.offsetWidth/2) + 'px';
             return;
         }
     }
@@ -811,3 +824,54 @@ function replaceAllText() {
         showToast('No occurrences found', 'info');
     }
 }
+
+/* ── NARRATOR VOICE SETTINGS ── */
+function initVoiceSettings() {
+    const select = document.getElementById('editorVoiceSelect');
+    if (!select) return;
+
+    const populateVoices = () => {
+        const voices = SpeechEngine.getVoices();
+        if (voices.length === 0) return;
+
+        select.innerHTML = '<option value="">Default System Voice</option>';
+        voices.forEach(voice => {
+            const option = document.createElement('option');
+            option.value = voice.voiceURI;
+            // Theme-safe colors for dropdown options
+            option.style.background = 'var(--bg-secondary)';
+            option.style.color = 'var(--text-primary)';
+            
+            // Identify gender hints in name if possible
+            let genderHint = '';
+            if (voice.name.toLowerCase().includes('male')) genderHint = ' 👨';
+            else if (voice.name.toLowerCase().includes('female')) genderHint = ' 👩';
+            
+            option.textContent = `${voice.name}${genderHint}`;
+            if (voice.voiceURI === SpeechEngine.preferredVoiceURI) option.selected = true;
+            select.appendChild(option);
+        });
+    };
+
+    populateVoices();
+    if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = populateVoices;
+    }
+}
+
+function setNarratorVoice(uri) {
+    SpeechEngine.setVoice(uri);
+    showToast('Voice updated!', 'success');
+}
+
+function previewSelectedVoice() {
+    const select = document.getElementById('editorVoiceSelect');
+    if (select && select.value) {
+        SpeechEngine.testVoice(select.value);
+    } else {
+        SpeechEngine.speak("This is the default system narrator.");
+    }
+}
+
+// Call init on load
+document.addEventListener('DOMContentLoaded', initVoiceSettings);

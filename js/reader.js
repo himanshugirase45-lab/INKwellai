@@ -322,3 +322,58 @@ function addComment() {
     renderComments();
     showToast('Comment posted! 💬', 'success');
 }
+
+// ===== TEXT TO SPEECH =====
+function toggleReading() {
+    const content = document.getElementById('readerContent');
+    const text = content ? content.innerText : "";
+    
+    if (!text) {
+        showToast("No content to read", "error");
+        return;
+    }
+
+    const btn = document.getElementById('readerListenBtn');
+    const ctrlBtn = document.getElementById('readerControlsListenBtn');
+
+    SpeechEngine.toggle(
+        text,
+        () => {
+            // On End
+            if (btn) btn.innerHTML = '🎧 Listen';
+            if (ctrlBtn) ctrlBtn.innerHTML = '🎧 Read Aloud';
+        },
+        () => {
+            // On Start
+            if (btn) btn.innerHTML = '⏹️ Stop';
+            if (ctrlBtn) ctrlBtn.innerHTML = '⏹️ Stop';
+            showToast('Reading aloud...', 'info');
+        }
+    );
+}
+
+// ===== VOICE INITIALIZATION =====
+function initReaderVoice() {
+    const select = document.getElementById('readerVoiceSelect');
+    if (!select) return;
+
+    const populate = () => {
+        const voices = SpeechEngine.getVoices();
+        select.innerHTML = '<option value="">Default</option>';
+        voices.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.voiceURI;
+            opt.style.background = 'var(--bg-secondary)';
+            opt.style.color = 'var(--text-primary)';
+            let gender = v.name.toLowerCase().includes('male') ? ' 👨' : (v.name.toLowerCase().includes('female') ? ' 👩' : '');
+            opt.textContent = v.name + gender;
+            if (v.voiceURI === SpeechEngine.preferredVoiceURI) opt.selected = true;
+            select.appendChild(opt);
+        });
+    };
+
+    populate();
+    if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = populate;
+}
+
+document.addEventListener('DOMContentLoaded', initReaderVoice);

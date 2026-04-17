@@ -13,47 +13,49 @@
 <body>
 
     <nav class="navbar">
-        <!-- Back Button -->
-        <button onclick="goBack()" style="
-            display:flex;align-items:center;gap:7px;
-            padding:8px 14px;border-radius:10px;
-            background:rgba(255,255,255,0.06);
-            border:1px solid rgba(255,255,255,0.12);
-            color:var(--text-secondary);font-size:.85rem;font-weight:600;
-            cursor:pointer;transition:all .25s;margin-right:12px;flex-shrink:0;
-        " onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='var(--text-primary)'"
-            onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='var(--text-secondary)'"
-            title="Go back">
-            ← Back
-        </button>
+        <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center;">
+                <!-- Back Button -->
+                <button onclick="goBack()" style="
+                    display:flex;align-items:center;gap:7px;
+                    padding:8px 14px;border-radius:10px;
+                    background:rgba(255,255,255,0.06);
+                    border:1px solid rgba(255,255,255,0.12);
+                    color:var(--text-secondary);font-size:.85rem;font-weight:600;
+                    cursor:pointer;transition:all .25s;margin-right:12px;flex-shrink:0;
+                " onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='var(--text-primary)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='var(--text-secondary)'"
+                    title="Go back">
+                    ← Back
+                </button>
 
-        <a href="index.html" class="navbar-brand">
-            <div class="logo-icon">📖</div><span>Inkwell</span>
-        </a>
-        <div class="navbar-nav">
-            <div style="display:flex;align-items:center;gap:8px">
-                <span id="bookTitleDisplay" style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Untitled
-                    Book</span>
-                <span class="badge" id="saveStatusBadge">Saved</span>
+                <a href="index.html" class="navbar-brand">
+                    <div class="logo-icon">📖</div><span>Inkwell</span>
+                </a>
             </div>
-        </div>
-        <div class="navbar-actions">
-            <button class="theme-toggle" id="themeToggle">🌙</button>
-            <button class="btn btn-secondary btn-sm" id="sprintToggleBtn" onclick="toggleSprintPanel()" style="min-width:90px;justify-content:center;transition:all 0.3s">⏱️ Sprint</button>
-            <button class="btn btn-secondary btn-sm" onclick="exportPDF()">📤 Export PDF</button>
-            <button class="btn btn-secondary btn-sm" onclick="toggleSidebar()">📚 Sidebar</button>
-            <button class="btn btn-secondary btn-sm" id="aiToggleBtn" onclick="toggleAIPanel()">🤖 AI Assistant</button>
-            <button class="btn btn-primary btn-sm" onclick="publishBook()">🚀 Publish</button>
-            <!-- Settings Button -->
-            <button onclick="toggleEditorSettings()" id="editorSettingsBtn" title="Settings" style="
-                width:36px;height:36px;border-radius:9px;
-                background:rgba(255,255,255,0.06);
-                border:1px solid rgba(255,255,255,0.12);
-                color:var(--text-secondary);font-size:1rem;
-                display:flex;align-items:center;justify-content:center;
-                cursor:pointer;transition:all .25s;
-            ">⚙️</button>
-            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+
+            <div class="navbar-nav" style="flex:1; justify-content:center; display:flex;">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span id="bookTitleDisplay" style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Untitled Book</span>
+                    <span class="badge" id="saveStatusBadge">Saved</span>
+                </div>
+            </div>
+
+            <div class="navbar-actions">
+                <button class="btn btn-secondary btn-sm" onclick="toggleSidebar()">📚 Sidebar</button>
+                <button class="btn btn-secondary btn-sm" id="aiToggleBtn" onclick="toggleAIPanel()">🤖 AI Assistant</button>
+                <button class="btn btn-secondary btn-sm" id="editorListenBtnNavbar" onclick="toggleReading()" style="min-width:90px;justify-content:center;transition:all 0.3s">🎧 Listen</button>
+                <!-- Settings Button -->
+                <button onclick="toggleEditorSettings()" id="editorSettingsBtn" title="Settings" style="
+                    width:36px;height:36px;border-radius:9px;
+                    background:rgba(255,255,255,0.06);
+                    border:1px solid rgba(255,255,255,0.12);
+                    color:var(--text-secondary);font-size:1rem;
+                    display:flex;align-items:center;justify-content:center;
+                    cursor:pointer;transition:all .25s;
+                ">⚙️</button>
+                <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            </div>
         </div>
     </nav>
 
@@ -193,6 +195,18 @@
             </div>
         </div>
 
+        <!-- Narrator Settings -->
+        <div style="padding:20px 22px;border-bottom:1px solid rgba(255,255,255,0.07)">
+            <div style="font-size:.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px">Narrator Voice</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+                <select id="editorVoiceSelect" class="input" style="font-size:0.8rem;" onchange="setNarratorVoice(this.value)">
+                    <option value="" style="background:var(--bg-card); color:var(--text-primary)">Default System Voice</option>
+                </select>
+                <button onclick="previewSelectedVoice()" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">🎧 Test Voice</button>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-top:8px">Choose a voice for reading your story aloud.</div>
+        </div>
+
         <!-- API Key -->
         <div style="padding:20px 22px;border-bottom:1px solid rgba(255,255,255,0.07)">
             <div style="font-size:.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px">Gemini API Key</div>
@@ -263,20 +277,23 @@
         <div class="editor-main">
             <!-- RIBBON TABS -->
             <div class="ribbon-tabs-container">
-                <div class="ribbon-tabs">
-                    <div class="ribbon-tab file-tab" style="font-weight:600; color:#fff; background:#005fb8; border:none; border-radius:0;">File</div>
-                    <div class="ribbon-tab active" onclick="switchRibbon('home')" id="tab-home">Home</div>
-                    <div class="ribbon-tab" onclick="switchRibbon('insert')" id="tab-insert">Insert</div>
-                    <div class="ribbon-tab" onclick="switchRibbon('tools')" id="tab-tools">Draw</div>
-                </div>
-                <div style="display:flex; gap:8px; padding-bottom:4px;">
-                    <button class="btn btn-secondary btn-sm" style="font-size:0.75rem">💬 Comments</button>
-                    <button class="btn btn-primary btn-sm" style="font-size:0.75rem">📤 Share</button>
+                <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-end;">
+                    <div class="ribbon-tabs">
+                        <div class="ribbon-tab file-tab" style="font-weight:600; color:#fff; background:#005fb8; border:none; border-radius:0;">File</div>
+                        <div class="ribbon-tab active" onclick="switchRibbon('home')" id="tab-home">Home</div>
+                        <div class="ribbon-tab" onclick="switchRibbon('insert')" id="tab-insert">Insert</div>
+                        <div class="ribbon-tab" onclick="switchRibbon('tools')" id="tab-tools">Tools</div>
+                    </div>
+                    <div style="display:flex; gap:8px; padding-bottom:4px;">
+                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem">💬 Comments</button>
+                        <button class="btn btn-primary btn-sm" style="font-size:0.75rem" onclick="switchRibbon('tools')">📤 Share</button>
+                    </div>
                 </div>
             </div>
 
             <!-- TOOLBAR (Word Style Ribbon) -->
             <div class="editor-toolbar">
+                <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; gap:4px; align-items:flex-start;">
                 
                 <!-- HOME TAB CONTENT -->
                 <div id="ribbon-grp-home" style="display:flex; gap:4px; width:100%;">
@@ -356,21 +373,12 @@
                     </div>
 
                     <!-- Editing Group -->
-                    <div class="ribbon-group" style="min-width:100px;">
+                    <div class="ribbon-group" style="min-width:100px; border-right:none">
                         <div class="ribbon-sub-group">
                             <button onclick="openFindReplace()" class="ribbon-sub-button"><span>🔍</span> Find</button>
                             <button onclick="openFindReplace()" class="ribbon-sub-button"><span>ab</span> Replace</button>
                         </div>
                         <span class="ribbon-group-label">Editing</span>
-                    </div>
-
-                    <!-- Add-ins Group -->
-                    <div class="ribbon-group" style="min-width:80px; border-right:none">
-                        <button class="ribbon-button">
-                            <div class="icon" style="color:#d83b01;">⊞</div>
-                            <span class="label">Add-ins</span>
-                        </button>
-                        <span class="ribbon-group-label">Add-ins</span>
                     </div>
                 </div>
 
@@ -393,35 +401,62 @@
 
                 <!-- TOOLS TAB CONTENT -->
                 <div id="ribbon-grp-tools" style="display:none; gap:4px; width:100%;">
-                    <div class="ribbon-group" style="min-width:80px; border-right:none">
-                        <button onclick="toggleVoice()" class="ribbon-button">
+                    <div class="ribbon-group" style="min-width:160px; border-right:none">
+                        <button onclick="toggleVoice()" class="ribbon-button" id="voiceBtn">
                             <div class="icon" style="color:#005fb8;">🎙️</div>
                             <span class="label">Dictate</span>
                         </button>
-                        <span class="ribbon-group-label">Voice</span>
+                        <button onclick="toggleReading()" class="ribbon-button" id="editorListenBtnTools">
+                            <div class="icon" style="color:#005fb8;">🎧</div>
+                            <span class="label">Read Aloud</span>
+                        </button>
+                        <span class="ribbon-group-label">Voice & Speech</span>
+                    </div>
+
+                    <div class="ribbon-group" style="min-width:120px;">
+                        <button class="ribbon-button" id="sprintToggleBtn" onclick="toggleSprintPanel()">
+                            <div class="icon" style="color:#d2a106;">⏱️</div>
+                            <span class="label">Sprint</span>
+                        </button>
+                        <span class="ribbon-group-label">Writing Tools</span>
+                    </div>
+
+                    <div class="ribbon-group" style="min-width:180px; border-right:none">
+                        <div style="display:flex; padding-bottom:16px;">
+                            <button onclick="exportPDF()" class="ribbon-button">
+                                <div class="icon" style="color:#005fb8;">📤</div>
+                                <span class="label">PDF</span>
+                            </button>
+                            <button onclick="publishBook()" class="ribbon-button">
+                                <div class="icon" style="color:#d2a106;">🚀</div>
+                                <span class="label">Publish</span>
+                            </button>
+                        </div>
+                        <span class="ribbon-group-label">Export & Share</span>
                     </div>
                 </div>
-            </div>
+                </div> <!-- End of Centering Div -->
+            </div> <!-- End of editor-toolbar -->
 
             <!-- EDITOR AREA (MS Word Style Page View) -->
             <div class="editor-area" style="position:relative; background:var(--bg-hover); padding:40px 20px; display:flex; justify-content:center; overflow-y:auto;">
                 
                 <!-- INLINE AI FLOATING MENU -->
                 <div id="aiFloatingMenu" style="
-                    position:absolute; display:none; z-index:500;
-                    background:rgba(21,21,30,0.85); backdrop-filter:blur(24px);
-                    border:1px solid rgba(124,106,247,0.4); border-radius:12px;
-                    padding:6px; box-shadow:var(--shadow-glow);
-                    align-items:center; gap:4px;
+                    position:fixed; display:none; z-index:2000;
+                    background:var(--bg-card); backdrop-filter:blur(24px);
+                    border:1px solid var(--accent); border-radius:16px;
+                    padding:8px; box-shadow:var(--shadow-glow);
+                    align-items:center; gap:8px;
                 ">
-                    <button class="btn btn-secondary btn-sm" onclick="applyInlineAI('✨ Improve')" style="padding:4px 8px;font-size:0.75rem;border:none;background:transparent;">✨ Improve</button>
-                    <button class="btn btn-secondary btn-sm" onclick="applyInlineAI('🎭 Change Tone')" style="padding:4px 8px;font-size:0.75rem;border:none;background:transparent;">🎭 Change Tone</button>
-                    <button class="btn btn-secondary btn-sm" onclick="applyInlineAI('✂️ Shorten')" style="padding:4px 8px;font-size:0.75rem;border:none;background:transparent;">✂️ Shorten</button>
-                    <button class="btn btn-secondary btn-sm" onclick="applyInlineAI('📝 Expand')" style="padding:4px 8px;font-size:0.75rem;border:none;background:transparent;">📝 Expand</button>
+                    <button class="btn btn-ghost btn-sm" onclick="applyInlineAI('✨ Improve')" style="padding:4px 10px;font-size:0.75rem;">✨ Improve</button>
+                    <button class="btn btn-ghost btn-sm" onclick="applyInlineAI('🎭 Change Tone')" style="padding:4px 10px;font-size:0.75rem;">🎭 Change Tone</button>
+                    <button class="btn btn-ghost btn-sm" onclick="applyInlineAI('✂️ Shorten')" style="padding:4px 10px;font-size:0.75rem;">✂️ Shorten</button>
+                    <button class="btn btn-ghost btn-sm" onclick="applyInlineAI('📝 Expand')" style="padding:4px 10px;font-size:0.75rem;">📝 Expand</button>
                 </div>
 
-                <!-- PAGE DOCUMENT (A4 Proportion) -->
-                <div style="width:100%; max-width:816px; background:var(--bg-primary); padding:80px 96px; box-shadow:0 12px 30px rgba(0,0,0,0.12); border-radius:4px; min-height:1056px; border:1px solid rgba(0,0,0,0.05); position:relative; margin-bottom:40px;">
+                <!-- PAGE DOCUMENT (Standard Proportion) -->
+                <div style="width:100%; max-width:900px; background:var(--bg-primary); padding:80px 96px; box-shadow:0 12px 30px rgba(0,0,0,0.12); border-radius:4px; min-height:1056px; border:1px solid rgba(0,0,0,0.05); position:relative; margin-bottom:40px;">
                     <input type="text" id="chapterTitle" placeholder="Chapter Title..."
                         style="width:100%;background:transparent;border:none;font-size:2rem;font-weight:800;color:var(--text-primary);margin-bottom:24px;padding:0;outline:none;" />
                     <div id="editorContent" class="editor-content" contenteditable="true"

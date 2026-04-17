@@ -536,3 +536,113 @@ function createNewBook() {
     showToast('Book created! Opening editor...', 'success');
     setTimeout(() => location.href = `editor.html?id=${book.id}`, 800);
 }
+
+// ===== SPEECH ENGINE (TTS) =====
+const SpeechEngine = {
+    synth: window.speechSynthesis,
+    utterance: null,
+    isReading: false,
+    keepAliveTimer: null,
+    preferredVoiceURI: localStorage.getItem('inkwellVoiceURI'),
+    
+    getVoices() {
+        return this.synth.getVoices().filter(v => v.lang.startsWith('en'));
+    },
+
+    speak(text, onEndCallback) {
+        this.stop();
+        if (!text || text.trim().length === 0) return;
+
+        // Clean up text
+        const cleanText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        
+        this.utterance = new SpeechSynthesisUtterance(cleanText);
+        
+        let voices = this.synth.getVoices();
+        let selectedVoice = null;
+
+        if (this.preferredVoiceURI) {
+            selectedVoice = voices.find(v => v.voiceURI === this.preferredVoiceURI);
+        }
+
+        if (!selectedVoice) {
+            // Priority: Google English -> Premium English -> Any English
+            selectedVoice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en')) || 
+                           voices.find(v => v.name.includes('Premium') && v.lang.startsWith('en')) ||
+                           voices.find(v => v.lang.startsWith('en-US')) ||
+                           voices.find(v => v.lang.startsWith('en'));
+        }
+
+        if (selectedVoice) {
+            this.utterance.voice = selectedVoice;
+        }
+        
+        this.utterance.rate = 1.0;
+        this.utterance.pitch = 1.0;
+        this.utterance.volume = 1.0;
+        
+        this.utterance.onstart = () => {
+            this.isReading = true;
+            // Chrome Bug Fix: Long speech stops after 15s. This pulse keeps it alive.
+            this.keepAliveTimer = setInterval(() => {
+                if (this.synth.speaking) {
+                    this.synth.pause();
+                    this.synth.resume();
+                }
+            }, 10000);
+        };
+
+        this.utterance.onend = () => {
+            this.isReading = false;
+            clearInterval(this.keepAliveTimer);
+            if (onEndCallback) onEndCallback();
+        };
+        
+        this.utterance.onerror = (event) => {
+            console.error("Speech Error:", event);
+            this.isReading = false;
+            clearInterval(this.keepAliveTimer);
+            if (onEndCallback) onEndCallback();
+            
+            if (event.error !== 'interrupted') {
+                showToast("Voice narration error. Try selecting a different voice.", "error");
+            }
+        };
+
+        // Standard sequence to ensure playback
+        this.synth.cancel();
+        setTimeout(() => {
+            this.synth.speak(this.utterance);
+        }, 50);
+    },
+
+    testVoice(voiceURI) {
+        this.speak("This is a preview of the selected voice.");
+    },
+
+    setVoice(voiceURI) {
+        this.preferredVoiceURI = voiceURI;
+        localStorage.setItem('inkwellVoiceURI', voiceURI);
+    },
+
+    stop() {
+        if (this.synth) {
+            this.synth.cancel();
+            // Also need to trigger this because cancel doesn't always fire onend
+            this.isReading = false;
+            clearInterval(this.keepAliveTimer);
+        }
+    },
+
+    toggle(text, onEndCallback, onStartCallback) {
+        if (this.isReading) {
+            this.stop();
+            if (onEndCallback) onEndCallback();
+            return false;
+        } else {
+            if (onStartCallback) onStartCallback();
+            this.speak(text, onEndCallback);
+            return true;
+        }
+    }
+};
