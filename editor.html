@@ -6,33 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editor — Inkwell</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    <link rel="stylesheet" href="css/editor-premium.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
 </head>
 
 <body>
 
     <nav class="navbar">
-        <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;">
-            <div style="display:flex; align-items:center;">
-                <!-- Back Button -->
-                <button onclick="goBack()" style="
-                    display:flex;align-items:center;gap:7px;
-                    padding:8px 14px;border-radius:10px;
-                    background:rgba(255,255,255,0.06);
-                    border:1px solid rgba(255,255,255,0.12);
-                    color:var(--text-secondary);font-size:.85rem;font-weight:600;
-                    cursor:pointer;transition:all .25s;margin-right:12px;flex-shrink:0;
-                " onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='var(--text-primary)'"
-                    onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='var(--text-secondary)'"
-                    title="Go back">
-                    ← Back
-                </button>
+            <a href="index.html" class="navbar-brand" style="
+                position: fixed;
+                top: 12px;
+                left: 20px;
+                z-index: 3000;
+                margin: 0;
+            ">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.4444 6.77778C12.4444 5.79594 13.2404 5 14.2222 5C15.2041 5 16 5.79594 16 6.77778C16 7.75962 15.2041 8.55556 14.2222 8.55556C13.2404 8.55556 12.4444 7.75962 12.4444 6.77778Z" fill="white" fill-opacity="0.4"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8889 2.11111C20.4851 2.11111 21.7778 3.40375 21.7778 5C21.7778 5.6171 21.5833 6.18873 21.2536 6.65595L10.3957 17.5138C10.1654 17.7442 9.90795 17.9407 9.62772 18.0991L4.62772 20.923C4.08405 21.2299 3.43794 20.8938 3.39414 20.2743L3.11111 16.2743C3.09038 15.9814 3.16853 15.6905 3.33614 15.4485L6.65595 10.6542C6.90378 10.2965 7.23485 10.0033 7.6186 9.80164L17.2329 2.63228C17.7214 2.30256 18.2838 2.11111 18.8889 2.11111ZM18.8889 3.88889C18.6657 3.88889 18.4552 3.96246 18.284 4.09553L8.66973 11.2649C8.52985 11.3384 8.40914 11.4452 8.31885 11.5755L5.35242 15.8601L5.5342 18.4239L8.68378 16.6455C8.7858 16.5878 8.87955 16.5161 8.96342 16.4323L19.8213 5.5744C19.944 5.41163 20.0175 5.21092 20.0175 5C20.0175 4.37701 19.5119 3.88889 18.8889 3.88889Z" fill="white"/>
+                    </svg>
+                </div>
+                <span>Inkwell</span>
+            </a>
 
-                <a href="index.html" class="navbar-brand">
-                    <div class="logo-icon">📖</div><span>Inkwell</span>
-                </a>
-            </div>
+            <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:20px; visibility: hidden; pointer-events: none;">
+                    <!-- Placeholder to keep layout balanced if needed -->
+                    <div style="width:100px;"></div>
+                </div>
 
             <div class="navbar-nav" style="flex:1; justify-content:center; display:flex;">
                 <div style="display:flex;align-items:center;gap:8px">
@@ -44,6 +46,7 @@
             <div class="navbar-actions">
                 <button class="btn btn-secondary btn-sm" onclick="toggleSidebar()">📚 Sidebar</button>
                 <button class="btn btn-secondary btn-sm" id="aiToggleBtn" onclick="toggleAIPanel()">🤖 AI Assistant</button>
+                <button class="btn btn-secondary btn-sm" id="toolbarToggleBtn" onclick="toggleWriterToolbar()" title="Toggle Writing Tools">✍️ Toolbar</button>
                 <button class="btn btn-secondary btn-sm" id="editorListenBtnNavbar" onclick="toggleReading()" style="min-width:90px;justify-content:center;transition:all 0.3s">🎧 Listen</button>
                 <!-- Settings Button -->
                 <button onclick="toggleEditorSettings()" id="editorSettingsBtn" title="Settings" style="
@@ -231,7 +234,7 @@
 
     <div class="editor-layout">
         <!-- CHAPTER / BIBLE SIDEBAR -->
-        <aside class="editor-sidebar" id="editorSidebar">
+        <aside class="editor-sidebar hidden" id="editorSidebar">
             <!-- TABS -->
             <div style="display:flex; border-bottom:1px solid var(--border);">
                 <button onclick="switchSidebarTab('chapters')" id="tabBtnChapters" style="flex:1; padding:12px; background:var(--bg-secondary); border:none; border-bottom:2px solid var(--accent); color:var(--text-primary); font-size: 0.85rem; font-weight:600; cursor:pointer; transition:all .2s;">Chapters</button>
@@ -275,168 +278,83 @@
 
         <!-- EDITOR MAIN -->
         <div class="editor-main">
-            <!-- RIBBON TABS -->
-            <div class="ribbon-tabs-container">
-                <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-end;">
-                    <div class="ribbon-tabs">
-                        <div class="ribbon-tab file-tab" style="font-weight:600; color:#fff; background:#005fb8; border:none; border-radius:0;">File</div>
-                        <div class="ribbon-tab active" onclick="switchRibbon('home')" id="tab-home">Home</div>
-                        <div class="ribbon-tab" onclick="switchRibbon('insert')" id="tab-insert">Insert</div>
-                        <div class="ribbon-tab" onclick="switchRibbon('tools')" id="tab-tools">Tools</div>
+            <div class="writer-toolbar-container">
+                <div class="writer-toolbar" id="writerToolbar">
+                    <!-- Font & Size Group -->
+                    <div class="toolbar-group">
+                        <select class="toolbar-select" style="width: 100px;" onchange="setEditorFont(this.value)">
+                            <option value="Inter">Inter</option>
+                            <option value="Outfit">Outfit</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Courier New">Mono</option>
+                        </select>
+                        <select class="toolbar-select" style="width: 50px;" onchange="document.getElementById('editorContent').style.fontSize=this.value+'px'">
+                            <option value="16">16</option>
+                            <option value="18" selected>18</option>
+                            <option value="20">20</option>
+                            <option value="24">24</option>
+                        </select>
                     </div>
-                    <div style="display:flex; gap:8px; padding-bottom:4px;">
-                        <button class="btn btn-secondary btn-sm" style="font-size:0.75rem">💬 Comments</button>
-                        <button class="btn btn-primary btn-sm" style="font-size:0.75rem" onclick="switchRibbon('tools')">📤 Share</button>
+
+                    <!-- Main Formatting -->
+                    <div class="toolbar-group">
+                        <button class="tool-btn" onclick="execCmd('bold')" data-tip="Bold"><strong>B</strong></button>
+                        <button class="tool-btn" onclick="execCmd('italic')" data-tip="Italic"><em>I</em></button>
+                        <button class="tool-btn" onclick="execCmd('underline')" data-tip="Underline"><span style="text-decoration: underline;">U</span></button>
+                        <button class="tool-btn" onclick="execCmd('backColor', '#fef08a')" data-tip="Highlight">✨</button>
+                    </div>
+
+                    <!-- Paragraph & Lists -->
+                    <div class="toolbar-group">
+                        <button class="tool-btn" onclick="execCmd('justifyLeft')" data-tip="Align Left">≡</button>
+                        <button class="tool-btn" onclick="execCmd('justifyCenter')" data-tip="Align Center">≣</button>
+                        <button class="tool-btn" onclick="execCmd('insertUnorderedList')" data-tip="Bullet List">•≡</button>
+                        <button class="tool-btn" onclick="execCmd('insertOrderedList')" data-tip="Numbered List">1≡</button>
+                    </div>
+
+                    <!-- Styles -->
+                    <div class="toolbar-group">
+                        <button class="tool-btn" onclick="execCmd('formatBlock','p')" data-tip="Normal">P</button>
+                        <button class="tool-btn" onclick="execCmd('formatBlock','h1')" data-tip="Title">H1</button>
+                        <button class="tool-btn" onclick="execCmd('formatBlock','h2')" data-tip="Subtitle">H2</button>
+                    </div>
+
+                    <!-- Insert & Advanced -->
+                    <div class="toolbar-group" style="padding-right: 0;">
+                        <button class="tool-btn" onclick="addChapter()" data-tip="New Page / Chapter">📄</button>
+                        <button class="tool-btn" onclick="insertImage()" data-tip="Insert Image">🖼️</button>
+                        <button class="tool-btn" onclick="toggleSprintPanel()" id="sprintToggleBtn" data-tip="Writing Sprint">⏱️</button>
+                        <button class="tool-btn" onclick="toggleVoice()" id="voiceBtn" data-tip="Dictate">🎙️</button>
+                        <button class="tool-btn" onclick="toggleMoreMenu(event)" data-tip="More Options">•••</button>
+
+                        <!-- Hidden More Menu -->
+                        <div id="moreToolsMenu" class="more-tools-menu">
+                            <div class="more-tool-item" style="flex-direction: column; align-items: flex-start; gap: 4px; pointer-events: none;">
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.75rem;">
+                                    <span>Page Width</span>
+                                    <span id="pageWidthVal">900px</span>
+                                </div>
+                                <input type="range" min="600" max="1400" value="900" step="50" 
+                                    style="width: 100%; height: 4px; accent-color: var(--accent); cursor: pointer; pointer-events: auto;"
+                                    oninput="adjustPageWidth(this.value)">
+                            </div>
+                            <div style="height: 1px; background: var(--border); margin: 4px 0;"></div>
+                            <div class="more-tool-item" onclick="openFindReplace()">
+                                <span>🔍</span> Find & Replace
+                            </div>
+                            <div class="more-tool-item" onclick="toggleReading()" id="editorListenBtnTools">
+                                <span>🎧</span> Read Aloud
+                            </div>
+                            <div class="more-tool-item" onclick="exportPDF()">
+                                <span>📤</span> Export PDF
+                            </div>
+                            <div class="more-tool-item" onclick="publishBook()">
+                                <span>🚀</span> Publish Story
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- TOOLBAR (Word Style Ribbon) -->
-            <div class="editor-toolbar">
-                <div style="width:100%; max-width:1200px; margin:0 auto; display:flex; gap:4px; align-items:flex-start;">
-                
-                <!-- HOME TAB CONTENT -->
-                <div id="ribbon-grp-home" style="display:flex; gap:4px; width:100%;">
-                    
-                    <!-- Clipboard Group -->
-                    <div class="ribbon-group">
-                        <div style="display:flex; padding-bottom:16px;">
-                            <button onclick="execCmd('paste')" class="ribbon-button">
-                                <div class="icon" style="color:#d2a106;">📋</div>
-                                <span class="label">Paste</span>
-                            </button>
-                            <div class="ribbon-sub-group">
-                                <button onclick="execCmd('cut')" class="ribbon-sub-button"><span>✂️</span> Cut</button>
-                                <button onclick="execCmd('copy')" class="ribbon-sub-button"><span>📄</span> Copy</button>
-                                <button onclick="execCmd('removeFormat')" class="ribbon-sub-button"><span style="color:#d2a106;">🖌️</span> Format Painter</button>
-                            </div>
-                        </div>
-                        <span class="ribbon-group-label">Clipboard</span>
-                    </div>
-
-                    <!-- Font Group -->
-                    <div class="ribbon-group" style="min-width:260px;">
-                        <div style="display:flex; flex-direction:column; gap:4px; padding-bottom:16px; width:100%;">
-                            <!-- Top row: Font family & sizes -->
-                            <div style="display:flex; gap:4px; align-items:center;">
-                                <select class="ribbon-select" style="width:120px;" onchange="setEditorFont(this.value)">
-                                    <option value="Aptos">Aptos (Body)</option>
-                                    <option value="Inter">Inter</option>
-                                    <option value="Georgia">Georgia</option>
-                                </select>
-                                <select class="ribbon-select" style="width:55px;" onchange="document.getElementById('editorContent').style.fontSize=this.value+'px'">
-                                    <option value="14">11</option>
-                                    <option value="16">12</option>
-                                    <option value="18">14</option>
-                                </select>
-                                <div class="toolbar-divider"></div>
-                                <button class="ribbon-sub-button" style="color:var(--accent-light);" onclick="changeEditorSize(1)">A↑</button>
-                                <button class="ribbon-sub-button" style="color:var(--accent-light);" onclick="changeEditorSize(-1)">A↓</button>
-                            </div>
-                            <!-- Bottom row: Bold/Italic/etc -->
-                            <div style="display:flex; gap:2px; align-items:center;">
-                                <button class="ribbon-sub-button" style="font-weight:bold;" onclick="execCmd('bold')">B</button>
-                                <button class="ribbon-sub-button" style="font-style:italic;" onclick="execCmd('italic')">I</button>
-                                <button class="ribbon-sub-button" style="text-decoration:underline;" onclick="execCmd('underline')">U</button>
-                                <button class="ribbon-sub-button" style="text-decoration:line-through;" onclick="execCmd('strikeThrough')">ab</button>
-                                <div class="toolbar-divider"></div>
-                                <button class="ribbon-sub-button" onclick="execCmd('backColor', '#fef08a')">✨ Highlight</button>
-                            </div>
-                        </div>
-                        <span class="ribbon-group-label">Font</span>
-                    </div>
-
-                    <!-- Paragraph Group -->
-                    <div class="ribbon-group" style="min-width:180px;">
-                        <div style="display:flex; flex-direction:column; gap:4px; padding-bottom:16px; width:100%;">
-                            <div style="display:flex; gap:2px; align-items:center;">
-                                <button class="ribbon-sub-button" onclick="execCmd('insertUnorderedList')">⋮≡</button>
-                                <button class="ribbon-sub-button" onclick="execCmd('insertOrderedList')">1≡</button>
-                                <div class="toolbar-divider"></div>
-                                <button class="ribbon-sub-button" onclick="execCmd('justifyLeft')">≡</button>
-                                <button class="ribbon-sub-button" onclick="execCmd('justifyCenter')">≣</button>
-                                <button class="ribbon-sub-button" onclick="execCmd('justifyRight')">≡</button>
-                            </div>
-                        </div>
-                        <span class="ribbon-group-label">Paragraph</span>
-                    </div>
-
-                    <!-- Styles Group -->
-                    <div class="ribbon-group" style="min-width:350px;">
-                        <div style="display:flex; gap:4px; padding-bottom:16px; width:100%; align-items:center;">
-                            <div onclick="execCmd('formatBlock','p')" class="ribbon-style-card"><span>Normal</span></div>
-                            <div onclick="execCmd('formatBlock','h1')" class="ribbon-style-card"><span style="font-weight:700; color:var(--accent-light)">Heading 1</span></div>
-                            <div onclick="execCmd('formatBlock','h2')" class="ribbon-style-card"><span style="font-weight:600; color:var(--accent-light)">Heading 2</span></div>
-                            <div class="ribbon-style-card"><span>Title</span></div>
-                        </div>
-                        <span class="ribbon-group-label">Styles</span>
-                    </div>
-
-                    <!-- Editing Group -->
-                    <div class="ribbon-group" style="min-width:100px; border-right:none">
-                        <div class="ribbon-sub-group">
-                            <button onclick="openFindReplace()" class="ribbon-sub-button"><span>🔍</span> Find</button>
-                            <button onclick="openFindReplace()" class="ribbon-sub-button"><span>ab</span> Replace</button>
-                        </div>
-                        <span class="ribbon-group-label">Editing</span>
-                    </div>
-                </div>
-
-                <!-- INSERT TAB CONTENT -->
-                <div id="ribbon-grp-insert" style="display:none; gap:4px; width:100%;">
-                    <div class="ribbon-group" style="min-width:140px;">
-                        <div style="display:flex; padding-bottom:16px;">
-                            <button onclick="insertImage()" class="ribbon-button">
-                                <div class="icon" style="color:#005fb8;">🖼️</div>
-                                <span class="label">Pictures</span>
-                            </button>
-                            <button onclick="const url=prompt('Enter Link URL:'); if(url) execCmd('createLink', url);" class="ribbon-button">
-                                <div class="icon" style="color:#005fb8;">🔗</div>
-                                <span class="label">Link</span>
-                            </button>
-                        </div>
-                        <span class="ribbon-group-label">Media & Links</span>
-                    </div>
-                </div>
-
-                <!-- TOOLS TAB CONTENT -->
-                <div id="ribbon-grp-tools" style="display:none; gap:4px; width:100%;">
-                    <div class="ribbon-group" style="min-width:160px; border-right:none">
-                        <button onclick="toggleVoice()" class="ribbon-button" id="voiceBtn">
-                            <div class="icon" style="color:#005fb8;">🎙️</div>
-                            <span class="label">Dictate</span>
-                        </button>
-                        <button onclick="toggleReading()" class="ribbon-button" id="editorListenBtnTools">
-                            <div class="icon" style="color:#005fb8;">🎧</div>
-                            <span class="label">Read Aloud</span>
-                        </button>
-                        <span class="ribbon-group-label">Voice & Speech</span>
-                    </div>
-
-                    <div class="ribbon-group" style="min-width:120px;">
-                        <button class="ribbon-button" id="sprintToggleBtn" onclick="toggleSprintPanel()">
-                            <div class="icon" style="color:#d2a106;">⏱️</div>
-                            <span class="label">Sprint</span>
-                        </button>
-                        <span class="ribbon-group-label">Writing Tools</span>
-                    </div>
-
-                    <div class="ribbon-group" style="min-width:180px; border-right:none">
-                        <div style="display:flex; padding-bottom:16px;">
-                            <button onclick="exportPDF()" class="ribbon-button">
-                                <div class="icon" style="color:#005fb8;">📤</div>
-                                <span class="label">PDF</span>
-                            </button>
-                            <button onclick="publishBook()" class="ribbon-button">
-                                <div class="icon" style="color:#d2a106;">🚀</div>
-                                <span class="label">Publish</span>
-                            </button>
-                        </div>
-                        <span class="ribbon-group-label">Export & Share</span>
-                    </div>
-                </div>
-                </div> <!-- End of Centering Div -->
-            </div> <!-- End of editor-toolbar -->
 
             <!-- EDITOR AREA (MS Word Style Page View) -->
             <div class="editor-area" style="position:relative; background:var(--bg-hover); padding:40px 20px; display:flex; justify-content:center; overflow-y:auto;">
@@ -456,7 +374,9 @@
                 </div>
 
                 <!-- PAGE DOCUMENT (Standard Proportion) -->
-                <div style="width:100%; max-width:900px; background:var(--bg-primary); padding:80px 96px; box-shadow:0 12px 30px rgba(0,0,0,0.12); border-radius:4px; min-height:1056px; border:1px solid rgba(0,0,0,0.05); position:relative; margin-bottom:40px;">
+                <div id="writingPage" style="width:100%; max-width:900px; background:var(--bg-primary); padding:80px 96px; box-shadow:0 12px 30px rgba(0,0,0,0.12); border-radius:4px; min-height:1056px; border:1px solid rgba(0,0,0,0.05); position:relative; margin-bottom:40px; resize: horizontal; overflow: hidden; min-width: 500px;">
+                    <!-- Resize Handle Indicator -->
+                    <div style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 4px; height: 40px; background: var(--border); border-radius: 4px; opacity: 0.3; pointer-events: none;"></div>
                     <input type="text" id="chapterTitle" placeholder="Chapter Title..."
                         style="width:100%;background:transparent;border:none;font-size:2rem;font-weight:800;color:var(--text-primary);margin-bottom:24px;padding:0;outline:none;" />
                     <div id="editorContent" class="editor-content" contenteditable="true"
@@ -659,6 +579,53 @@
             location.href = 'login.html';
         }
 
+        /* ── TOOLBAR TOGGLE ── */
+        function toggleWriterToolbar() {
+            const container = document.querySelector('.writer-toolbar-container');
+            const btn = document.getElementById('toolbarToggleBtn');
+            const isHidden = container.classList.toggle('hidden');
+            
+            if (isHidden) {
+                btn.style.background = 'transparent';
+                btn.style.borderColor = 'var(--border)';
+                btn.innerHTML = '✍️ Show Tools';
+            } else {
+                btn.style.background = 'rgba(124,106,247,0.15)';
+                btn.style.borderColor = 'var(--accent)';
+                btn.innerHTML = '✍️ Hide Tools';
+            }
+            localStorage.setItem('inkwellToolbarHidden', isHidden);
+        }
+
+        /* ── PAGE SIZE ADJUSTER ── */
+        function adjustPageWidth(val) {
+            const page = document.getElementById('writingPage');
+            const valDisplay = document.getElementById('pageWidthVal');
+            if (page) page.style.maxWidth = val + 'px';
+            if (valDisplay) valDisplay.textContent = val + 'px';
+            localStorage.setItem('inkwellPageWidth', val);
+        }
+
+        // Initialize state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Restore Page Width
+            const savedWidth = localStorage.getItem('inkwellPageWidth');
+            if (savedWidth) {
+                adjustPageWidth(savedWidth);
+                const slider = document.querySelector('input[type="range"][oninput*="adjustPageWidth"]');
+                if (slider) slider.value = savedWidth;
+            }
+
+            const isHidden = localStorage.getItem('inkwellToolbarHidden') === 'true';
+            if (isHidden) {
+                document.querySelector('.writer-toolbar-container').classList.add('hidden');
+                const btn = document.getElementById('toolbarToggleBtn');
+                btn.innerHTML = '✍️ Show Tools';
+                btn.style.background = 'transparent';
+                btn.style.borderColor = 'var(--border)';
+            }
+        });
+
         /* ── BACK BUTTON ── */
         function goBack() {
             if (document.referrer && document.referrer !== window.location.href) {
@@ -668,23 +635,18 @@
             }
         }
 
-        /* ── RIBBON SWITCHER ── */
-        function switchRibbon(tab) {
-            document.querySelectorAll('.ribbon-tab').forEach(t => {
-                t.classList.remove('active');
-            });
-            const activeTab = document.getElementById('tab-' + tab);
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-            const homeGrp = document.getElementById('ribbon-grp-home');
-            const insertGrp = document.getElementById('ribbon-grp-insert');
-            const toolsGrp = document.getElementById('ribbon-grp-tools');
-            
-            if (homeGrp) homeGrp.style.display = (tab === 'home') ? 'flex' : 'none';
-            if (insertGrp) insertGrp.style.display = (tab === 'insert') ? 'flex' : 'none';
-            if (toolsGrp) toolsGrp.style.display = (tab === 'tools') ? 'flex' : 'none';
+        /* ── MORE MENU TOGGLE ── */
+        function toggleMoreMenu(e) {
+            e.stopPropagation();
+            const menu = document.getElementById('moreToolsMenu');
+            menu.classList.toggle('active');
         }
+
+        // Close menu on outside click
+        document.addEventListener('click', () => {
+            const menu = document.getElementById('moreToolsMenu');
+            if (menu) menu.classList.remove('active');
+        });
 
         /* ── EDITOR SETTINGS PANEL ── */
         let editorFontSize = parseInt(localStorage.getItem('editorFontSize') || '18');
