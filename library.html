@@ -1,193 +1,293 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Library — Inkwell</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-</head>
-
-<body>
-
-    <nav class="navbar">
-        <div class="nav-container" style="display:flex; align-items:center; width:100%; height:100%; max-width:1400px; margin:0 auto; padding:0 24px">
-            <button onclick="history.back()" class="btn btn-secondary btn-sm"
-                style="margin-right:16px;display:flex;align-items:center;gap:6px;flex-shrink:0">← Back</button>
-            <a href="index.html" class="navbar-brand">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.4444 6.77778C12.4444 5.79594 13.2404 5 14.2222 5C15.2041 5 16 5.79594 16 6.77778C16 7.75962 15.2041 8.55556 14.2222 8.55556C13.2404 8.55556 12.4444 7.75962 12.4444 6.77778Z" fill="white" fill-opacity="0.4"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8889 2.11111C20.4851 2.11111 21.7778 3.40375 21.7778 5C21.7778 5.6171 21.5833 6.18873 21.2536 6.65595L10.3957 17.5138C10.1654 17.7442 9.90795 17.9407 9.62772 18.0991L4.62772 20.923C4.08405 21.2299 3.43794 20.8938 3.39414 20.2743L3.11111 16.2743C3.09038 15.9814 3.16853 15.6905 3.33614 15.4485L6.65595 10.6542C6.90378 10.2965 7.23485 10.0033 7.6186 9.80164L17.2329 2.63228C17.7214 2.30256 18.2838 2.11111 18.8889 2.11111ZM18.8889 3.88889C18.6657 3.88889 18.4552 3.96246 18.284 4.09553L8.66973 11.2649C8.52985 11.3384 8.40914 11.4452 8.31885 11.5755L5.35242 15.8601L5.5342 18.4239L8.68378 16.6455C8.7858 16.5878 8.87955 16.5161 8.96342 16.4323L19.8213 5.5744C19.944 5.41163 20.0175 5.21092 20.0175 5C20.0175 4.37701 19.5119 3.88889 18.8889 3.88889Z" fill="white"/>
-                    </svg>
-                </div><span>Inkwell</span>
-            </a>
-            <div class="navbar-nav" style="margin-left:40px">
-                <a href="index.html">Home</a>
-                <a href="library.html" class="active">Library</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="editor.html">Write</a>
-            </div>
-            <div class="navbar-actions" style="margin-left:auto">
-                <button class="theme-toggle" id="themeToggle">🌙</button>
-                <div class="dropdown">
-                    <div class="avatar" id="userAvatar" onclick="toggleDropdown('userMenu')">JD</div>
-                    <div class="dropdown-menu" id="userMenu">
-                        <div class="dropdown-item" onclick="location.href='dashboard.html'">👤 Profile</div>
-                        <div class="dropdown-item" onclick="location.href='dashboard.html'">📊 Dashboard</div>
-                        <div class="dropdown-item" onclick="location.href='editor.html'">✍️ New Book</div>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</div>
-                    </div>
-                </div>
-                <div class="hamburger" id="hamburger" style="margin-left:12px"><span></span><span></span><span></span></div>
-            </div>
-        </div>
-    </nav>
-
-    <div style="padding-top:64px">
-        <!-- LIBRARY HERO -->
-        <div class="library-hero" style="position:relative; overflow:hidden; padding:120px 0 100px; background:linear-gradient(135deg, var(--bg-primary), var(--bg-secondary)); border-bottom:1px solid var(--border)">
-            <div class="container" style="position:relative; z-index:2">
-                <div style="max-width:850px; margin:0 auto; text-align:center">
-                    <div class="eyebrow" style="margin-bottom:24px; justify-content:center; background:rgba(124,106,247,0.1); color:var(--accent); border:1px solid var(--accent-glow)">✨ Discover Your Next Story</div>
-                    <h1 style="font-size:4.5rem; font-weight:800; margin-bottom:24px; color:var(--text-primary); line-height:1; letter-spacing:-2px">
-                        Explore the <span style="background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent">Inkwell Library</span>
-                    </h1>
-                    <p style="font-size:1.25rem; color:var(--text-secondary); margin-bottom:48px; max-width:650px; margin-left:auto; margin-right:auto; line-height:1.6">
-                        Unlock thousands of worlds crafted by indie authors. From epic high fantasy to gritty cyberpunk thrillers, your next favorite book is waiting.
-                    </p>
-                    <div class="search-bar" style="max-width:700px; margin:0 auto; background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow-glow); padding:8px; border-radius:20px; display:flex; align-items:center">
-                        <span class="search-icon" style="margin:0 15px; font-size:1.2rem">🔍</span>
-                        <input type="text" id="searchInput" placeholder="Search by title, author, or keyword..."
-                            oninput="searchBooks(this.value)" style="background:transparent; color:var(--text-primary); border:none; flex:1; padding:15px 10px; outline:none; font-size:1.1rem" />
-                        <button class="btn btn-primary" onclick="searchBooks(document.getElementById('searchInput').value)" style="padding:15px 36px; border-radius:14px; font-weight:700; font-size:1rem">Discover</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Animated Background Elements -->
-            <div style="position:absolute; top:-150px; left:-50px; width:600px; height:600px; background:var(--accent-glow); filter:blur(150px); border-radius:50%; pointer-events:none; opacity:0.3"></div>
-            <div style="position:absolute; bottom:-100px; right:-50px; width:500px; height:500px; background:rgba(168, 85, 247, 0.1); filter:blur(120px); border-radius:50%; pointer-events:none; opacity:0.3"></div>
-            <div style="position:absolute; top:15%; right:8%; font-size:18rem; opacity:0.02; pointer-events:none; transform: rotate(15deg)">📚</div>
-            <div style="position:absolute; bottom:15%; left:8%; font-size:14rem; opacity:0.02; pointer-events:none; transform: rotate(-10deg)">✍️</div>
-        </div>
-
-        <!-- GENRE MARQUEE -->
-        <div class="marquee-wrap" style="background:var(--bg-card); border-bottom:1px solid var(--border); padding:24px 0; overflow:hidden">
-            <div class="marquee-track" style="display:flex; white-space:nowrap; gap:80px; animation: scrollMarquee 60s linear infinite;">
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🐉 Fantasy Adventure ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🚀 Cyberpunk Sci-Fi ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">💕 Modern Romance ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🔮 Dark Mystery ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">⚡ High Thriller ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">👻 Supernatural Horror ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">📰 Non-Fiction Gems ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">✒️ Epic Poetry ✦</div>
-                <!-- Duplicate for seamless loop -->
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🐉 Fantasy Adventure ✦</div>
-                <div class="mi" style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; gap:14px; align-items:center; letter-spacing:2px">🚀 Cyberpunk Sci-Fi ✦</div>
-            </div>
-        </div>
-
-        <div class="container" style="padding-top:80px;padding-bottom:120px">
-            <!-- FILTERS & TOOLS -->
-            <div style="background:var(--bg-secondary); padding:28px; border-radius:28px; border:1px solid var(--border); margin-bottom:56px; box-shadow:var(--shadow)">
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:28px; flex-wrap:wrap">
-                    <div class="filter-tabs" id="filterTabs" style="margin-bottom:0; background:transparent; padding:0; display:flex; gap:10px">
-                        <div class="filter-tab active" onclick="filterBooks('all',this)" style="padding:12px 24px; border-radius:14px">All Stories</div>
-                        <div class="filter-tab" onclick="filterBooks('Fantasy',this)" style="padding:12px 24px; border-radius:14px">Fantasy</div>
-                        <div class="filter-tab" onclick="filterBooks('Sci-Fi',this)" style="padding:12px 24px; border-radius:14px">Sci-Fi</div>
-                        <div class="filter-tab" onclick="filterBooks('Romance',this)" style="padding:12px 24px; border-radius:14px">Romance</div>
-                        <div class="filter-tab" onclick="filterBooks('Mystery',this)" style="padding:12px 24px; border-radius:14px">Mystery</div>
-                        <div class="filter-tab" onclick="filterBooks('Thriller',this)" style="padding:12px 24px; border-radius:14px">Thriller</div>
-                    </div>
-                    
-                    <div style="display:flex; align-items:center; gap:20px">
-                        <span style="font-size:0.9rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:1px">Sort By</span>
-                        <select class="input" style="width:auto;padding:14px 24px;font-size:0.95rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:14px; font-weight:600; cursor:pointer"
-                            onchange="sortBooks(this.value)">
-                            <option value="trending">🔥 Trending Now</option>
-                            <option value="newest">🆕 Recently Released</option>
-                            <option value="rating">⭐ Best Rated</option>
-                            <option value="reads">👁️ Most Read</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display:flex; align-items:center; gap:16px; margin-bottom:48px">
-                <div style="height:1px; flex:1; background:var(--border)"></div>
-                <div style="font-size:1rem; color:var(--text-muted); font-weight:700; letter-spacing:1px">
-                    DISCOVERING <span id="bookResultCount" style="color:var(--accent)">0</span> REMARKABLE TITLES
-                </div>
-                <div style="height:1px; flex:1; background:var(--border)"></div>
-            </div>
-
-            <!-- BOOKS GRID -->
-            <div class="books-grid stagger" id="libraryGrid" style="gap:40px"></div>
-
-            <!-- LOAD MORE -->
-            <div class="text-center" style="margin-top:80px">
-                <button class="btn btn-secondary" id="loadMoreBtn" onclick="loadMoreBooks()" style="padding:18px 60px; font-size:1.15rem; border-radius:18px; font-weight:700; background:var(--bg-card); border-color:var(--border-light); transition:var(--transition)">
-                    Load More Stories
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOOK DETAIL MODAL -->
-    <div class="modal-overlay" id="bookDetailModal">
-        <div class="modal" style="max-width:700px; border-radius:32px; background:var(--bg-card); backdrop-filter:blur(20px); border:1px solid var(--border)">
-            <div class="modal-header" style="padding:32px 40px; border-bottom:1px solid var(--border)">
-                <h3 id="modalBookTitle" style="font-size:1.75rem; font-weight:800; color:var(--text-primary)">Book Title</h3>
-                <button class="modal-close" onclick="closeModal('bookDetailModal')" style="font-size:1.5rem">✕</button>
-            </div>
-            <div style="padding:40px">
-                <div style="display:flex;gap:40px;margin-bottom:40px; align-items:flex-start">
-                    <div id="modalBookCover"
-                        style="width:180px;height:260px;border-radius:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:6rem; box-shadow:var(--shadow); transform:rotate(-2deg)">
-                    </div>
-                    <div style="flex:1">
-                        <div style="font-size:1.1rem;color:var(--text-muted);margin-bottom:12px; font-weight:500">Written by <span
-                                id="modalBookAuthor" style="color:var(--text-primary); font-weight:800"></span></div>
-                        <div class="badge mb-4" id="modalBookCategory" style="padding:8px 18px; font-size:0.9rem; font-weight:700"></div>
-                        <div style="display:flex;gap:24px;font-size:1rem;color:var(--text-secondary); background:var(--bg-hover); padding:20px; border-radius:20px; border:1px solid var(--border)">
-                            <div style="text-align:center; flex:1"><div style="color:var(--warning); margin-bottom:6px; font-size:1.2rem">⭐</div><div id="modalBookRating" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Rating</div></div>
-                            <div style="text-align:center; flex:1"><div style="color:var(--accent); margin-bottom:6px; font-size:1.2rem">👁️</div><div id="modalBookReads" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Reads</div></div>
-                            <div style="text-align:center; flex:1"><div style="color:var(--danger); margin-bottom:6px; font-size:1.2rem">❤️</div><div id="modalBookLikes" style="font-weight:800; color:var(--text-primary); font-size:1.1rem"></div><div style="font-size:0.75rem; text-transform:uppercase; opacity:0.6">Likes</div></div>
-                        </div>
-                    </div>
-                </div>
-                <h4 style="font-size:1.25rem; margin-bottom:16px; color:var(--text-primary); font-weight:700">About this story</h4>
-                <p id="modalBookDesc" style="font-size:1.1rem; line-height:1.8; color:var(--text-secondary); margin-bottom:40px"></p>
-                <div style="display:flex;gap:20px">
-                    <button class="btn btn-primary" style="flex:2;justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px; font-weight:700" id="readBookBtn">📖 Read Now</button>
-                    <button class="btn btn-secondary" onclick="addToReadingList()" id="addToListBtn" style="flex:1; justify-content:center; border-radius:20px; font-weight:600">+ Reading List</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        @keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Library - Inkwell AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Libre+Caslon+Text:wght@400;700&amp;family=Manrope:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#c8c6c5",
+                        "primary": "#000000",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e1dfdb",
+                        "on-background": "#151c27",
+                        "inverse-surface": "#2a313d",
+                        "surface-container-high": "#e2e8f8",
+                        "on-tertiary-container": "#9466ff",
+                        "on-secondary-container": "#63635f",
+                        "surface-container-low": "#f0f3ff",
+                        "tertiary": "#000000",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "surface-container-highest": "#dce2f3",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e9ddff",
+                        "secondary": "#5e5e5b",
+                        "surface-container": "#e7eefe",
+                        "secondary-fixed": "#e4e2dd",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-primary-container": "#858383",
+                        "background": "#f9f9ff",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-container": "#23005c",
+                        "surface-bright": "#f9f9ff",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "outline-variant": "#c4c7c7",
+                        "on-secondary-fixed-variant": "#474744",
+                        "on-primary-fixed-variant": "#474646",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#5f5e5e",
+                        "outline": "#747878",
+                        "on-tertiary-fixed": "#23005c",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d3daea",
+                        "surface": "#f9f9ff",
+                        "primary-container": "#1c1b1b",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#444748",
+                        "surface-variant": "#dce2f3",
+                        "on-surface": "#151c27",
+                        "primary-fixed": "#e5e2e1",
+                        "secondary-fixed-dim": "#c8c6c2",
+                        "on-secondary-fixed": "#1b1c19",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Libre Caslon Text"],
+                        "headline-lg": ["Libre Caslon Text"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Manrope"],
+                        "headline-lg-mobile": ["Libre Caslon Text"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.7", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }]
+                    }
+                }
+            }
         }
-        .filter-tab { transition: var(--transition); border: 1px solid transparent; }
-        .filter-tab:hover { background: var(--bg-hover); border-color: var(--border); }
-        .filter-tab.active { background: var(--accent); color: white; border-color: var(--accent); shadow: var(--shadow-glow); }
-        .book-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .book-card:hover { transform: translateY(-10px) scale(1.02); }
-    </style>
-
-    <div class="toast-container" id="toastContainer"></div>
-    <script src="js/app.js"></script>
-    <script>
-        initLibrary();
     </script>
-</body>
-
-</html>
+<style>
+        .ai-gradient-bg {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 border-b border-outline-variant/30 text-primary font-body-md">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ink_pen</span>
+<span class="font-display-lg text-headline-lg text-primary">Inkwell</span>
+</div>
+<div class="hidden md:flex gap-8">
+<a class="text-secondary hover:text-primary transition-colors duration-300" href="#">Home</a>
+<a class="text-primary font-bold border-b-2 border-primary active:scale-95 transition-transform" href="#">Library</a>
+<a class="text-secondary hover:text-primary transition-colors duration-300" href="#">Editor</a>
+<a class="text-secondary hover:text-primary transition-colors duration-300" href="#">Dashboard</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary hover:text-primary/80 transition-colors">Login</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded font-label-md">Signup</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow pt-[100px]">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop pt-16 pb-section-gap text-center">
+<h1 class="font-display-lg text-display-lg text-primary mb-6">Explore the Library</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl mx-auto mb-12">Discover your next masterpiece in our curated digital archive.</p>
+<div class="max-w-3xl mx-auto flex items-center bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-2 focus-within:border-[#8b5cf6] transition-colors">
+<span class="material-symbols-outlined text-secondary ml-3">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md px-4" placeholder="Search titles, authors, or themes..." type="text"/>
+<div class="border-l border-outline-variant/30 pl-4 py-1 flex items-center">
+<select class="bg-transparent border-none focus:ring-0 text-secondary font-label-md cursor-pointer appearance-none pr-8">
+<option>All Genres</option>
+<option>Fiction</option>
+<option>Non-Fiction</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Genre Filters -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap">
+<div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md whitespace-nowrap">All</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Fiction</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Non-Fiction</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Poetry</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Mystery</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Sci-Fi</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Romance</button>
+<button class="px-6 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md whitespace-nowrap border border-outline-variant/30 hover:border-outline transition-colors">Biography</button>
+</div>
+</section>
+<!-- Featured Collection -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-8 border-b border-outline-variant/20 pb-4">Editor's Picks</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Featured Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded-lg overflow-hidden group">
+<div class="h-64 bg-surface-variant relative overflow-hidden">
+<img alt="Vintage book cover" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A vintage, weathered leather-bound book lying open on a mahogany desk. Soft, warm natural light filters through a nearby window, illuminating the textured pages. The scene evokes a sophisticated literary modernist aesthetic, emphasizing a pristine, airy composition with tactile qualities. The mood is quiet, focused, and steeped in historical prestige." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqIpoEKqwDNDSXuzFz-uOsGFV1Uiy6-XQ6vCJpL2RmWGvPao-9Dw2DxRFRnFVL0zufdKhSDVTzVtE1VvHNGdkoj8BgXJrj0xL4izr_6OURgonXots9k9xd9EedcZ0K5DjLbh6ybq2dvjmBeuuFplHYhiXg8j5QTK56rVqEAe2pqsXSdkhh1-w_roDc8HoBUX8Of_CK61rAknDv9Pvs4ah6LBDe42SyveOuRFptFFS5drA-59Kmyx3dix3vrAOV1sPtGLcUm9RlaDE"/>
+</div>
+<div class="p-6">
+<span class="inline-block px-2 py-1 bg-surface-variant text-on-surface-variant font-label-md text-[10px] rounded mb-3">Fiction</span>
+<h3 class="font-headline-lg text-xl mb-1 text-primary">The Silent Echo</h3>
+<p class="text-secondary font-caption mb-4">by Eleanor Vance</p>
+<p class="text-body-md text-on-surface-variant line-clamp-3">A haunting exploration of memory and loss in a coastal town where whispers carry across generations.</p>
+</div>
+</div>
+<!-- Featured Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded-lg overflow-hidden group">
+<div class="h-64 bg-surface-variant relative overflow-hidden">
+<img alt="Abstract cover" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An abstract digital artwork serving as a book cover, featuring fluid, ethereal gradients of deep charcoal and inspiration violet. The composition is minimal and precise, with delicate, hair-line geometric structures suggesting architectural blueprints. The aesthetic balances high-performance AI generative art with the refined, paper-first feel of a premium literary journal. The lighting is soft and internal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzobuHOn2rotuhry1b_0pmfRU01d0KdXvLFt9566dWye3TYB0fqWCbFBF0npOdS-HmPIaLdELG-mfmRyrZbKoH5wLdXsVEPX4XYeO9ne9eYumGFL31ecMEs4r9Xb4u9ztsLGQYUljm6hY7DqoO11GzUsLreCabJiVOqkVgzj72-oMaZ7TWRZ-4twBvM3vxUlB8N3KhsV31JZss0FYyGi4bVZXlZe5CpQCjLwm3wmx4nDKmeLEk-hjVrsIXc9r9JNmkJYeGbpVIi1A"/>
+</div>
+<div class="p-6">
+<span class="inline-block px-2 py-1 bg-surface-variant text-on-surface-variant font-label-md text-[10px] rounded mb-3">Sci-Fi</span>
+<h3 class="font-headline-lg text-xl mb-1 text-primary">Neon Genesis</h3>
+<p class="text-secondary font-caption mb-4">by Marcus Thorne</p>
+<p class="text-body-md text-on-surface-variant line-clamp-3">In a city powered by fractured light, one archivist discovers a frequency that could rewrite reality.</p>
+</div>
+</div>
+<!-- Featured Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded-lg overflow-hidden group">
+<div class="h-64 bg-surface-variant relative overflow-hidden">
+<img alt="Classic literature" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A meticulously curated flat lay of classic literature elements on a parchment ivory background. A delicate fountain pen rests near an open notebook with crisp, white pages. The lighting is bright and airy, casting soft, tonal shadows. The overall image projects a sophisticated, minimalist literary aesthetic, capturing the quiet focus of a writer's digital sanctuary." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8faBW9Pb0c71f_Z2MXe9PsWpw3pBFTVB2G9rwpr8Q78q7eBT-ZYhI0RhYMKulPIbD3BcsR03G1-eM-oHZ5aUwE4JLA81OZHgnv24h41wVU-obUcBNGAg2WIwdEqRx686wtzfhnKN5P8cIXmbRAs0LYJpRuE-7wcQYumwGHUP7OrXoEggyOzpCjWd2u3y0Uab-t1aGY3JbqEikL6-NEwSc_fpM1DvFO7OApV7hMzlMslC227RFgwIuh32ZSRZfFNGioL13vndnFWE"/>
+</div>
+<div class="p-6">
+<span class="inline-block px-2 py-1 bg-surface-variant text-on-surface-variant font-label-md text-[10px] rounded mb-3">Poetry</span>
+<h3 class="font-headline-lg text-xl mb-1 text-primary">Paper Crowns</h3>
+<p class="text-secondary font-caption mb-4">by Sylvia R. Chen</p>
+<p class="text-body-md text-on-surface-variant line-clamp-3">A delicate collection of verses examining the fragile nature of modern royalty and self-worth.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Books Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-8 border-b border-outline-variant/20 pb-4">New Arrivals</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter gap-y-12">
+<!-- Book Item 1 -->
+<div class="flex flex-col group">
+<div class="aspect-[2/3] bg-surface-variant rounded-lg mb-4 overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity" data-alt="A minimalist book cover design featuring a single, stark black line drawing of a tree branch against a pure white background. The aesthetic is extremely clean and editorial, utilizing wide margins and precise layout to convey luxury. The image feels tactile, as if printed on high-quality, textured paper, aligning perfectly with a sophisticated literary modernist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9zO4C9Hbc3RanW4Aoc3PZUT9AEPxCH6gHi3iS2tbxv7jXdUF_-I_EXkfmEoOUCH0Vvw6Mn6llj9EQ3FwMeURAfkfHXyQfVnK_j_50BHYlfXisB0hpKO_cohl43ogg6diFl7L9Y-SUZFnJGtDi2VXWeqRUS3csBcbq1_-mm5ZcjnBsD4vmCiZSYuZyTbxLf8G4U0_Mh3l-XvvB3PqdJrXPESczmCNF0o6K6W7kWA2Q-basDiymWffpzBNn0IvTG4t9ttfAEUhab4"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-headline-lg text-lg text-primary leading-tight mb-1">The Winter Garden</h4>
+<p class="text-secondary font-caption mb-2">Anna Kowalski</p>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-secondary">4.8</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-caption text-secondary">1.2k reads</span>
+</div>
+</div>
+<button class="w-full py-2 ai-gradient-bg text-on-primary font-label-md rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read Now</button>
+</div>
+<!-- Book Item 2 -->
+<div class="flex flex-col group">
+<div class="aspect-[2/3] bg-surface-variant rounded-lg mb-4 overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity" data-alt="An atmospheric, abstract book cover depicting a blurred, nocturnal cityscape. Subtle hints of inspiration violet and deep indigo emerge through an ethereal, glassmorphism-like blur. The composition is modern and moody, reflecting an AI-generated digital art style while maintaining the structural elegance of a premium publication. The visual tone is intriguing and technologically sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFiWGksosUNyALoLFcDf70RTIy8bM1ylwXkmpEoJW9BjfgLhDOVyFCTRPKSc3wmlIl6H3bcpz9lgggnniV1cfAlWrse0_K20jNmQXuqe5PZmVBFHXtotRT1dmmk6Z5L_sVB3EohCvHbnY99aWS28s0LliFLfpPUpYPmFUwOlGEar2oom7tCIu9tJA2HV7_ugImtkoyx17AXB67IGt73t0IM_gIN1trZ3qUAToQTmOWUwBqUGruB1pnVaqpIhOTq9cVUBOHOCEwZmI"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-headline-lg text-lg text-primary leading-tight mb-1">Midnight Protocol</h4>
+<p class="text-secondary font-caption mb-2">J.D. Sterling</p>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-secondary">4.5</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-caption text-secondary">850 reads</span>
+</div>
+</div>
+<button class="w-full py-2 ai-gradient-bg text-on-primary font-label-md rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read Now</button>
+</div>
+<!-- Book Item 3 -->
+<div class="flex flex-col group">
+<div class="aspect-[2/3] bg-surface-variant rounded-lg mb-4 overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity" data-alt="A serene book cover featuring a close-up of delicate, dried botanicals pressed onto textured parchment ivory paper. The lighting is soft and even, enhancing the tactile quality of the fibers. The design is airy and heavily reliant on negative space, conveying a sense of quiet focus and the weight of historical publishing blended with modern minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV66A8yxDF5hVOXcZ0BlKNWcDrsVFx22ot6MEvxl0t07D07UXrmULOoud8tOFpbV_wfPtRaS9wEp4MQdoREowbB4rF6j8K6ImSoUZqk1rvBx6czSf2Yuinj6nCbuxlpt8xCyFBs5f73dUXqYjcUVAgWCOP3UG5yADgGSx5FOr9S0zlL7ev9S2kWuNWssbEgZ_L0cGDCh2LiMwPKXsON__7rfO78T3V0bcRX_rs_H3Pr3VSmKNM4wYZtpHqEIwotVuHYJanBG2Gwe4"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-headline-lg text-lg text-primary leading-tight mb-1">Botany of Desire</h4>
+<p class="text-secondary font-caption mb-2">Clara Hughes</p>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-secondary">4.9</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-caption text-secondary">3.4k reads</span>
+</div>
+</div>
+<button class="w-full py-2 ai-gradient-bg text-on-primary font-label-md rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read Now</button>
+</div>
+<!-- Book Item 4 -->
+<div class="flex flex-col group">
+<div class="aspect-[2/3] bg-surface-variant rounded-lg mb-4 overflow-hidden shadow-sm">
+<img alt="Book cover" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity" data-alt="A striking, contemporary book cover utilizing stark typography and precise geometric forms. The background is a clean white, intersected by a single, thin hair-line in deep charcoal. A soft, violet-tinted shadow suggests depth beneath a central abstract shape. The overall aesthetic is highly sophisticated, embodying the intersection of a physical writing desk and a high-performance creative engine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxgLhcIJxBvCm9CzQvoQTSJb-mrpOfFHyqCJuy7Y7QGTnw8dAt9hF2TY-uYvIHXyuPXucPK15jbyP8rfXdCWSmu7fBAIk3NxPeqLQ_uRnHMeYlLYvrLhTie6ZaXmLn4mBw016Hl2h1FDKe8uhAyU2uHTpveEafR9d8f15kmZNzUdXZYxndrzGDgb_ukctsUq5p9FBsVXcjIh1NzyT8n3Ru-q-IGLniNcI5P0yGIn30HsBC4A0lK7aLv6JhTkHAALVTP6kt4hmlxR4"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-headline-lg text-lg text-primary leading-tight mb-1">The Architecture of Thought</h4>
+<p class="text-secondary font-caption mb-2">Dr. E. Thorne</p>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-secondary">4.7</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-caption text-secondary">2.1k reads</span>
+</div>
+</div>
+<button class="w-full py-2 ai-gradient-bg text-on-primary font-label-md rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read Now</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface w-full py-12 border-t border-outline-variant/20 text-secondary font-caption">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop space-y-4 md:space-y-0 max-w-container-max mx-auto">
+<div>
+<span class="font-display-lg text-headline-lg-mobile text-primary">Inkwell</span>
+</div>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors underline opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors underline opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors underline opacity-80 hover:opacity-100" href="#">Contact</a>
+<a class="hover:text-primary transition-colors underline opacity-80 hover:opacity-100" href="#">Press</a>
+</div>
+<div>
+<p>© 2024 Inkwell AI. The Digital Sanctuary for Writers.</p>
+</div>
+</div>
+</footer>
+</body></html>

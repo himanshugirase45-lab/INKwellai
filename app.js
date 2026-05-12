@@ -161,30 +161,19 @@
             localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
         }
         function applySettings(s) {
-            // Theme
-            const themes = {
-                dark: { '--bg': '#0a0a0f', '--bg2': '#111118', '--bg3': '#18181f', '--bg4': '#222230', '--text': '#e8e4f0', '--text2': '#8888a8', '--text3': '#4a4a62', '--border': 'rgba(255,255,255,0.08)', '--border2': 'rgba(255,255,255,0.14)', '--heading': '#ffffff', '--card-bg': '#18181f', '--nav-bg': 'rgba(10,10,15,0.95)', '--promo-bg': '#0a0a0f', '--feat-bg': '#18181f', '--sp-bg': '#13131c' },
-                light: { '--bg': '#f4f4f8', '--bg2': '#ffffff', '--bg3': '#ffffff', '--bg4': '#eaeaf2', '--text': '#1a1a2e', '--text2': '#4a4a6a', '--text3': '#8888a8', '--border': 'rgba(0,0,0,0.09)', '--border2': 'rgba(0,0,0,0.15)', '--heading': '#0f0f1e', '--card-bg': '#ffffff', '--nav-bg': 'rgba(244,244,248,0.95)', '--promo-bg': '#f4f4f8', '--feat-bg': '#ffffff', '--sp-bg': '#f0f0f8' },
-                dim: { '--bg': '#1a1a2e', '--bg2': '#1e1e35', '--bg3': '#252540', '--bg4': '#2d2d50', '--text': '#d8d4f0', '--text2': '#7878a0', '--text3': '#4a4a6a', '--border': 'rgba(255,255,255,0.07)', '--border2': 'rgba(255,255,255,0.12)', '--heading': '#f0ecff', '--card-bg': '#252540', '--nav-bg': 'rgba(26,26,46,0.95)', '--promo-bg': '#1a1a2e', '--feat-bg': '#252540', '--sp-bg': '#1e1e35' },
-            };
-            const t = themes[s.theme] || themes.dark;
-            Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
-
             // Set data-theme for CSS overrides
             document.documentElement.setAttribute('data-theme', s.theme);
-            document.body.style.background = t['--bg'];
-            document.body.style.color = t['--text'];
-
+            
             // Accent
-            document.documentElement.style.setProperty('--violet', s.accentPrimary);
-            document.documentElement.style.setProperty('--violet2', s.accentSecondary);
+            document.documentElement.style.setProperty('--gold', s.accentPrimary);
+            document.documentElement.style.setProperty('--gold-bright', s.accentSecondary);
 
             // Font size
             const sizes = { small: '15px', medium: '16px', large: '18px' };
             document.documentElement.style.fontSize = sizes[s.font] || '16px';
 
             // Animations
-            document.documentElement.style.setProperty('--trans', s.animations ? 'all .3s cubic-bezier(.4,0,.2,1)' : 'none');
+            document.documentElement.style.setProperty('--trans', s.animations ? 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)' : 'none');
 
             // Compact
             document.documentElement.style.setProperty('--sec-pad', s.compact ? '60px' : '96px');
